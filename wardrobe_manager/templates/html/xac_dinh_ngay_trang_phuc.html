@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chọn Ngày</title>
+    <link rel="stylesheet" href="../../static/css/_tap.css">
+    <link rel="stylesheet" href="../../static/css/xac_dinh_ngay_trang_phuc.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header: tháng + năm (nút chọn tháng) -->
+        <header class="calendar-header">
+            <button class="month-selector has-tap" id="monthBtn" aria-label="Chọn tháng">
+                <span class="month-text" id="monthText">tháng 7 năm 2026</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+        </header>
+
+        <!-- Lịch -->
+        <main class="calendar-body scroll-area">
+            <!-- Hàng thứ (Days of week) -->
+            <div class="weekdays-grid">
+                <span>Thứ 2</span>
+                <span>Thứ 3</span>
+                <span>Thứ 4</span>
+                <span>Thứ 5</span>
+                <span>Thứ 6</span>
+                <span>Thứ 7</span>
+                <span>CN</span>
+            </div>
+
+            <!-- Lưới ngày (Dates) -->
+            <div class="dates-grid">
+                <!-- Tuần 1 -->
+                <button class="date-cell prev-month has-tap">29</button>
+                <button class="date-cell prev-month has-tap">30</button>
+                <button class="date-cell has-tap">1</button>
+                <button class="date-cell has-tap">2</button>
+                <button class="date-cell has-tap">3</button>
+                <button class="date-cell has-tap">4</button>
+                <button class="date-cell has-tap">5</button>
+
+                <!-- Tuần 2 -->
+                <button class="date-cell has-tap">6</button>
+                <button class="date-cell has-tap">7</button>
+                <button class="date-cell has-tap">8</button>
+                <button class="date-cell has-tap">9</button>
+                <button class="date-cell has-tap">10</button>
+                <button class="date-cell has-tap">11</button>
+                <button class="date-cell has-tap">12</button>
+
+                <!-- Tuần 3 -->
+                <button class="date-cell has-tap">13</button>
+                <button class="date-cell selected">14</button>
+                <button class="date-cell has-tap">15</button>
+                <button class="date-cell has-tap">16</button>
+                <button class="date-cell has-tap">17</button>
+                <button class="date-cell has-tap">18</button>
+                <button class="date-cell has-tap">19</button>
+
+                <!-- Tuần 4 -->
+                <button class="date-cell has-tap">20</button>
+                <button class="date-cell has-tap">21</button>
+                <button class="date-cell has-tap">22</button>
+                <button class="date-cell has-tap">23</button>
+                <button class="date-cell has-tap">24</button>
+                <button class="date-cell has-tap">25</button>
+                <button class="date-cell has-tap">26</button>
+
+                <!-- Tuần 5 -->
+                <button class="date-cell has-tap">27</button>
+                <button class="date-cell has-tap">28</button>
+                <button class="date-cell has-tap">29</button>
+                <button class="date-cell has-tap">30</button>
+                <button class="date-cell has-tap">31</button>
+                <button class="date-cell next-month has-tap">1</button>
+                <button class="date-cell next-month has-tap">2</button>
+
+                <!-- Tuần 6 -->
+                <button class="date-cell next-month has-tap">3</button>
+                <button class="date-cell next-month has-tap">4</button>
+                <button class="date-cell next-month has-tap">5</button>
+                <button class="date-cell next-month has-tap">6</button>
+                <button class="date-cell next-month has-tap">7</button>
+                <button class="date-cell next-month has-tap">8</button>
+                <button class="date-cell next-month has-tap">9</button>
+            </div>
+        </main>
+
+        <!-- Khu vực nút hành động (Bottom Actions) -->
+        <footer class="bottom-actions">
+            <button class="btn btn-outline has-tap">Hủy</button>
+            <button class="btn btn-solid has-tap">Xác nhận</button>
+        </footer>
+
+        <!-- Popup chọn tháng & năm (bottom sheet + wheel) -->
+        <div class="tp-overlay" id="tpOverlay"></div>
+        <div class="tp-sheet" id="tpSheet">
+            <div class="tp-handle"></div>
+            <h2 class="tp-title">Chọn tháng &amp; năm</h2>
+            <div class="tp-wheel-box">
+                <div class="tp-highlight"></div>
+                <div class="tp-wheel" id="tpWheelMonth"></div>
+                <div class="tp-wheel" id="tpWheelYear"></div>
+            </div>
+            <div class="tp-actions">
+                <button class="btn btn-outline has-tap" id="tpCancel">Hủy</button>
+                <button class="btn btn-solid has-tap" id="tpConfirm">Xác nhận</button>
+            </div>
+        </div>
+    </div>
+    <script src="../../static/js/xac_dinh_ngay_trang_phuc.js"></script>
+</body>
+</html>

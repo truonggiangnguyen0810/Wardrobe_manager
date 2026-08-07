@@ -1,0 +1,178 @@
+/* ============================================
+   FILE CẤU TRÚC CHUNG (LAYOUT + RESET)
+   - Reset, body, khung app, bottom-nav... dùng chung cho toàn app
+   - Đổi ở đây = áp dụng cho mọi trang
+   - Được nạp tự động qua @import trong _tap.css
+   - Biến màu/lý config nằm ở _tap.css (:root)
+============================================ */
+
+/* ====== FONT CHUNG (chỉ nạp 1 lần cho toàn app) ====== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+/* ====== RESET TOÀN APP ====== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent; /* bỏ highlight mặc định khi chạm mobile */
+}
+
+/* ====== BODY / NỀN DESKTOP ====== */
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--maunen); /* nền ngoài trên desktop */
+    min-height: var(--app-height);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ====== KHUNG ỨNG DỤNG MOBILE (chuẩn) ====== */
+/* Trang nào cần biến thể (căn giữa, cuộn, padding...) thì ghi đè ở CSS riêng */
+.app-container {
+    width: 100%;
+    max-width: 414px;
+    height: var(--app-height);
+    max-height: 896px;
+    margin: 0 auto;
+    background-color: var(--maunen);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+}
+
+/* ====== BOTTOM NAVIGATION (thống nhất toàn app - dùng flex) ====== */
+.bottom-nav {
+    flex-shrink: 0; /* nằm tự nhiên ở đáy khung, không cần padding đè lên nội dung */
+    width: 100%;
+    background-color: var(--trang);
+    border-top: 1px solid var(--xamdam);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0 16px;
+    z-index: 10;
+    height: 60px;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    color: var(--textphu);
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 600;
+    width: 60px;
+    text-align: center;
+    /* reset cho <button> (trợ năng): */
+    background: none;
+    border: none;
+    font-family: inherit;
+    padding: 0;
+    text-decoration: none; /* xóa gạch chân mặc định của thẻ <a> */
+    transform: scale(1);
+    transition: transform 0.2s ease;
+}
+
+/* Nút đang chọn: icon + chữ to lên 110% + đậm */
+.nav-item.active {
+    color: var(--textchinh);
+    transform: scale(1.1);
+    font-weight: 800;
+    position: relative;
+    z-index: 2;
+}
+.nav-item svg { width: 24px; height: 24px; }
+
+/* Nút bồng bềnh (FAB) ở giữa nav */
+.nav-fab {
+    position: relative;
+    width: 60px;
+    display: flex;
+    justify-content: center;
+}
+
+.fab-btn {
+    position: absolute;
+    top: -40px; /* trồi lên trên thanh nav */
+    width: 56px;
+    height: 56px;
+    background-color: var(--den);
+    color: var(--trang);
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+}
+.fab-btn svg { width: 28px; height: 28px; }
+
+/* ====== ACTION SHEET & FILTER (Dùng chung cho popup bottom) ====== */
+.sheet-overlay {
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.5); z-index: 100;
+    opacity: 0; transition: opacity 0.3s ease; pointer-events: none;
+}
+.sheet-overlay.show { opacity: 1; pointer-events: auto; }
+
+.action-sheet {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: var(--trang, #fff);
+    border-top-left-radius: 20px; border-top-right-radius: 20px;
+    padding: 24px 20px; z-index: 101;
+    display: flex; flex-direction: column; gap: 12px;
+    transform: translateY(100%); transition: transform 0.3s ease;
+}
+.action-sheet.show { transform: translateY(0); }
+
+.sheet-item, .sheet-cancel {
+    width: 100%; padding: 16px; border-radius: 12px;
+    font-size: 16px; font-weight: 600; text-align: center;
+    border: none; cursor: pointer; font-family: inherit;
+}
+.sheet-item { background: var(--xamnhat, #f5f5f5); color: var(--textchinh); }
+.sheet-cancel { background: transparent; color: var(--do, #e53936); margin-top: 8px; }
+
+/* --- AVATAR DROPDOWN --- */
+.avatar-dropdown-wrap {
+    position: relative;
+    display: inline-block;
+}
+.avatar-dropdown-menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    min-width: 200px;
+    z-index: 1000;
+    overflow: hidden;
+    flex-direction: column;
+}
+.avatar-dropdown-menu.show {
+    display: flex;
+    animation: fadeIn 0.2s ease-out;
+}
+.avatar-dropdown-item {
+    padding: 12px 16px;
+    color: #111;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    border-bottom: 1px solid #eee;
+    transition: background 0.2s;
+    text-align: left;
+}
+.avatar-dropdown-item:last-child {
+    border-bottom: none;
+}
+.avatar-dropdown-item:active {
+    background: #f5f5f5;
+}

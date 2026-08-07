@@ -1,0 +1,190 @@
+/* Phần Header - giống chi tiết món đồ */
+.header {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    flex-shrink: 0;
+    background-color: var(--maunen);
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+    box-shadow: 0 1px 0 var(--xamdam);
+}
+
+.header-title {
+    color: var(--textchinh);
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.spacer {
+    width: 24px;
+}
+
+/* Utility nhỏ dùng trong HTML */
+.relative {
+    position: relative;
+}
+.chevron-icon {
+    width: 20px;
+    height: 20px;
+    color: var(--xamdam);
+}
+.spacer-flex {
+    flex: 1;
+}
+
+/* Phần Ảnh Đại Diện */
+.profile-section {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+}
+
+.avatar-wrapper {
+    position: relative;
+}
+
+.avatar {
+    width: 144px;
+    height: 144px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.btn-edit {
+    position: absolute;
+    bottom: 4px;
+    right: -8px;
+    background-color: var(--trang);
+    padding: 8px;
+    border-radius: 12px;
+    border: 1px solid var(--xamnhat);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+
+.btn-edit svg {
+    width: 24px;
+    height: 24px;
+    color: var(--den);
+}
+
+/* Phần Danh sách Menu */
+.menu-list {
+    margin-top: 40px;
+    padding: 0 24px 110px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px;
+    margin: 0 -12px;
+    border-radius: 16px;
+    cursor: pointer;
+}
+
+.menu-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.label-arrow {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.menu-icon {
+    width: 24px;
+    height: 24px;
+    color: var(--textphu);
+    transition: color 0.2s;
+}
+
+.menu-label {
+    color: var(--textphu);
+    font-weight: 500;
+    font-size: 16px;
+}
+
+.menu-value-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--den);
+    text-align: right;
+    font-family: inherit;
+    cursor: text;
+}
+.menu-value-input::placeholder { color: var(--textphu); font-weight: 500; }
+.menu-value-select {
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--den);
+    font-family: inherit;
+    cursor: pointer;
+}
+button.menu-item {
+    width: 100%;
+    background: none;
+    border: none;
+    text-align: left;
+    font-family: inherit;
+}
+
+.menu-logout .menu-icon,
+.menu-logout .menu-label {
+    color: var(--do);
+}
+
+.menu-logout .menu-label {
+    font-weight: 700;
+}
+
+.menu-logout .menu-icon svg {
+    stroke-width: 2;
+}
+
+/* Footer - nút Lưu thay đổi ghim đáy */
+.footer-section {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 90px;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    background-color: var(--maunen);
+    border-top: 1px solid var(--xamdam);
+    z-index: 10;
+}
+
+.btn-save {
+    flex: 1;
+    padding: 16px 0;
+    border-radius: 12px;
+    background-color: var(--den);
+    color: var(--trang);
+    font-weight: 600;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+}

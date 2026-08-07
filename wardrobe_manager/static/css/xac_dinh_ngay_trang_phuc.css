@@ -1,0 +1,284 @@
+/* RESET & BIẾN MÀU CƠ BẢN */
+:root {
+    --bg-main: var(--maunen); /* Màu nền xám cực nhẹ của phần lịch */
+    --bg-bottom: var(--trang); /* Màu nền trắng tinh của phần nút bấm */
+    --text-main: var(--textchinh);
+    --text-faded: var(--xamnhat); /* Màu cho ngày của tháng trước/sau */
+    --text-weekday: var(--textphu); /* Màu xanh xám cho các thứ trong tuần */
+    --btn-dark: var(--textchinh);
+    --border-radius-btn: 14px;
+}
+
+/* HEADER - ngày tháng năm (giống chinh_sua_trang_phuc) */
+.calendar-header {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    flex-shrink: 0;
+    background-color: var(--maunen);
+    padding: 0 20px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 1px 0 var(--xamdam);
+}
+
+.month-selector {
+    background: none;
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    font-family: inherit;
+    color: var(--text-main);
+}
+
+.month-text {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+/* PHẦN THÂN LỊCH */
+.calendar-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px 16px 0;
+    scrollbar-width: none;
+    touch-action: pan-y; /* cuộn dọc tự nhiên, lướt ngang giao JS xử lý */
+}
+.calendar-body::-webkit-scrollbar { display: none; }
+
+/* Hàng hiển thị Thứ */
+.weekdays-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    margin-bottom: 24px;
+}
+
+.weekdays-grid span {
+    text-align: center;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text-weekday);
+}
+
+/* Lưới hiển thị Ngày */
+.dates-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    row-gap: 29px; /* khoảng cách dọc giữa các tuần */
+}
+
+.date-cell {
+    background: none;
+    border: none;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-main);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 36px;
+    width: 36px;
+    margin: 0 auto; /* Căn giữa button trong ô grid */
+    border-radius: 50%;
+    position: relative; /* để chứa ô số trang phục */
+    cursor: pointer;
+}
+
+.date-cell.prev-month,
+.date-cell.next-month {
+    color: var(--text-faded);
+    font-weight: 500;
+}
+
+/* Trạng thái ngày được chọn */
+.date-cell.selected {
+    background-color: var(--text-main);
+    color: var(--trang);
+}
+
+/* Ô vuông số trang phục trong ngày (chữ trắng, nền xanh) */
+.day-badge {
+    position: absolute;
+    top: -3px;
+    right: -3px;
+    min-width: 16px;
+    height: 16px;
+    padding: 0 3px;
+    border-radius: 4px;
+    background-color: var(--xanhnhat);
+    color: var(--trang);
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Ngày hôm nay: luôn bôi đậm + màu đỏ (dù chọn ngày khác) */
+.date-cell.today {
+    font-weight: 800;
+    color: var(--do);
+}
+/* Hôm nay lại đang được chọn -> giữ chữ trắng trên nền tối */
+.date-cell.today.selected {
+    color: var(--trang);
+}
+
+/* Lưu ý: Ngày đã chọn (.selected) sẽ KHÔNG có class has-tap trong HTML,
+   nên không bị mờ khi bấm. Ngày thường sẽ có has-tap. */
+
+/* KHU VỰC NÚT BẤM DƯỚI CÙNG - giống chinh_sua_trang_phuc */
+.bottom-actions {
+    flex-shrink: 0;
+    height: 90px;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background-color: var(--maunen);
+    border-top: 1px solid var(--xamdam);
+}
+
+.btn {
+    flex: 1;
+    height: 52px;
+    border-radius: var(--border-radius-btn);
+    font-size: 16px;
+    font-weight: 600;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.btn-outline {
+    background-color: transparent;
+    color: var(--text-main);
+    border: 1px solid var(--text-main);
+}
+
+.btn-solid {
+    background-color: var(--btn-dark);
+    color: var(--trang);
+    border: none;
+}
+
+/* ============================================
+   POPUP CHỌN THỜI GIAN (bottom sheet + wheel)
+   - Bấm mũi tên xuống ở header -> sheet trồi từ dưới lên
+   - Bấm "Xác nhận" -> header đổi tháng/năm
+   ============================================ */
+.tp-overlay {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.25s ease;
+    z-index: 20;
+}
+
+.tp-sheet {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--trang);
+    border-top-left-radius: 24px;
+    border-top-right-radius: 24px;
+    padding: 12px 20px 32px;
+    transform: translateY(100%); /* ẩn xuống dưới, trồi lên khi mở */
+    transition: transform 0.3s ease;
+    z-index: 21;
+}
+
+/* Trạng thái mở popup */
+.app-container.tp-open .tp-overlay { opacity: 1; visibility: visible; }
+.app-container.tp-open .tp-sheet { transform: translateY(0); }
+
+.tp-handle {
+    width: 40px;
+    height: 4px;
+    border-radius: 2px;
+    background-color: var(--xamnhat);
+    margin: 0 auto 16px;
+}
+.tp-title {
+    text-align: center;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--textchinh);
+    margin-bottom: 16px;
+}
+
+.tp-wheel-box {
+    position: relative;
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+}
+/* Dải sáng ở giữa (dòng đang chọn) */
+.tp-highlight {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 40px;
+    transform: translateY(-50%);
+    background-color: var(--xamnhat);
+    border-radius: 10px;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* Cột wheel */
+.tp-wheel {
+    flex: 1;
+    height: 200px;
+    overflow-y: auto;
+    scroll-snap-type: y mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    position: relative;
+    z-index: 1;
+    -webkit-mask: linear-gradient(transparent, #000 35%, #000 65%, transparent);
+    mask: linear-gradient(transparent, #000 35%, #000 65%, transparent);
+}
+.tp-wheel::-webkit-scrollbar { display: none; }
+.tp-wheel-item {
+    height: 40px;
+    scroll-snap-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--textchinh);
+}
+.tp-wheel-pad { height: 80px; } /* đệm để mục đầu/cuối snap vào giữa */
+
+.tp-actions {
+    display: flex;
+    gap: 16px;
+}
+
+/* ============================================
+   HIỆU ỨNG LƯỚT ĐỔI THÁNG
+   - anim-next: tháng sau trượt từ phải vào
+   - anim-prev: tháng trước trượt từ trái vào
+   ============================================ */
+@keyframes slideInRight {
+    from { transform: translateX(60px); opacity: 0; }
+    to   { transform: translateX(0); opacity: 1; }
+}
+@keyframes slideInLeft {
+    from { transform: translateX(-60px); opacity: 0; }
+    to   { transform: translateX(0); opacity: 1; }
+}
+.dates-grid.anim-next { animation: slideInRight 0.25s ease; }
+.dates-grid.anim-prev { animation: slideInLeft 0.25s ease; }

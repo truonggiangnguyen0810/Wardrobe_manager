@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đang phát triển</title>
+    <link rel="stylesheet" href="{% static 'css/_tap.css' %}">
+    <style>
+        .dev-wrap {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 24px;
+            gap: 16px;
+        }
+        .dev-icon {
+            width: 96px; height: 96px;
+            border-radius: 50%;
+            background-color: var(--xanhnhat);
+            color: var(--trang);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .dev-icon svg { width: 48px; height: 48px; }
+        .dev-title { font-size: 20px; font-weight: 800; color: var(--den); }
+        .dev-msg { font-size: 14px; color: var(--textphu); line-height: 1.6; max-width: 280px; }
+        .dev-back {
+            margin-top: 8px;
+            padding: 12px 28px;
+            border-radius: 999px;
+            background-color: var(--xanhnhat);
+            color: var(--trang);
+            font-weight: 700; font-size: 14px;
+            border: none; cursor: pointer; font-family: inherit;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="dev-wrap">
+            <div class="dev-icon" aria-hidden="true">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 11-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 004.486-6.336l-3.276 3.277a3.004 3.004 0 01-2.25-2.25l3.276-3.276a4.5 4.5 0 00-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437l1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008z"></path></svg>
+            </div>
+            <h1 class="dev-title">{{ ten_tinh_nang|default:"Tính năng này" }} đang phát triển</h1>
+            <p class="dev-msg">Chúng tôi đang hoàn thiện tính năng này. Vui lòng quay lại sau nhé!</p>
+            <button class="dev-back has-tap" onclick="if(history.length>1){history.back()}else{location.href='{% url 'trang_chu' %}'}">Quay lại</button>
+        </div>
+    </div>
+</body>
+</html>

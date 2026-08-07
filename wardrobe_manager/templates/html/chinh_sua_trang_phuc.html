@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Chỉnh sửa trang phục</title>
+    <link rel="stylesheet" href="../../static/css/_tap.css">
+    <link rel="stylesheet" href="../../static/css/chinh_sua_trang_phuc.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Status Bar & Header -->
+        <header class="app-header">
+            <div class="nav-bar">
+                <h1 class="screen-title" id="screenTitle">Trang phục mới</h1>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        {% csrf_token %}
+        <main class="main-content scroll-area">
+            <!-- Clothing Items Grid -->
+            <div class="clothing-grid" id="clothingGrid">
+                <button type="button" class="clothing-item add-new-item has-tap" id="btnOpenWardrobe">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#A0AAB5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                </button>
+            </div>
+
+            <!-- Details Section -->
+            <div class="details-section">
+                <div id="outfitErrorMsg" style="color: var(--do); font-size: 13px; font-weight: 500; margin-bottom: 12px; display: none;"></div>
+                
+                <!-- Info Row -->
+                <div class="detail-row" style="margin-bottom: 16px;">
+                    <span class="detail-label">Thông tin trang phục</span>
+                    <input type="text" class="detail-input" name="ten_trang_phuc" id="ten_trang_phuc" placeholder="Mô tả trang phục này">
+                </div>
+
+                <!-- Rating Row -->
+                <div class="detail-row" style="margin-bottom: 16px;">
+                    <span class="detail-label">Đánh giá của tôi</span>
+                    <div class="rating-stars">
+                        <!-- Ô hiển thị số sao (bên trái) -->
+                        <span class="rating-count">0</span>
+                        <input type="hidden" name="rating" id="rating_input" value="0">
+                        <!-- 5 ngôi sao: bấm sao thứ N -> bôi vàng N sao -->
+                        <svg class="star" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
+                        <svg class="star" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
+                        <svg class="star" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
+                        <svg class="star" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
+                        <svg class="star" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
+                    </div>
+                </div>
+
+                <!-- Form dáng Row -->
+                <div style="margin-bottom: 16px;">
+                    <label class="detail-label" style="display: block; margin-bottom: 12px;">Form dáng</label>
+                    <div id="form_dang_chips" style="display: flex; flex-wrap: wrap; gap: 8px;">
+                        {% for f in formdang_list %}
+                        <label class="filter-chip">
+                            <input type="checkbox" name="form_dang" value="{{ f.pk }}" style="display:none;" onchange="this.parentElement.classList.toggle('selected', this.checked)">
+                            <span>{{ f.ten_form }}</span>
+                        </label>
+                        {% endfor %}
+                        <span class="filter-chip" id="form_dang_khac_chip" onclick="showKhacInput('form_dang')" style="cursor:pointer; border-style:dashed;">+ Khác</span>
+                        <input type="checkbox" name="form_dang" value="khac" id="form_dang_khac_cb" style="display:none;">
+                        <input type="hidden" name="form_dang_khac" id="form_dang_khac_val" value="">
+                    </div>
+                    <div id="form_dang_khac_input_wrap" style="display:none; margin-top:8px;">
+                        <input type="text" id="form_dang_khac_input" placeholder="Nhập form dáng khác..." style="padding:6px 10px; border:1px solid #ccc; border-radius:8px; font-size:14px; width:100%; box-sizing:border-box;" onkeydown="if(event.key==='Enter'){event.preventDefault();confirmKhac('form_dang');}">
+                        <p style="font-size:11px; color:#999; margin:4px 0 0;">Nhấn Enter để xác nhận</p>
+                    </div>
+                </div>
+
+                <!-- Mùa Row -->
+                <div style="margin-bottom: 16px;">
+                    <label class="detail-label" style="display: block; margin-bottom: 12px;">Mùa</label>
+                    <div id="mua_chips" style="display: flex; flex-wrap: wrap; gap: 8px;">
+                        {% for m in mua_list %}
+                        <label class="filter-chip">
+                            <input type="checkbox" name="mua" value="{{ m.ma_mua }}" style="display:none;" onchange="this.parentElement.classList.toggle('selected', this.checked)">
+                            <span>{{ m.ten_mua }}</span>
+                        </label>
+                        {% endfor %}
+                        <span class="filter-chip" id="mua_khac_chip" onclick="showKhacInput('mua')" style="cursor:pointer; border-style:dashed;">+ Khác</span>
+                        <input type="checkbox" name="mua" value="khac" id="mua_khac_cb" style="display:none;">
+                        <input type="hidden" name="mua_khac" id="mua_khac_val" value="">
+                    </div>
+                    <div id="mua_khac_input_wrap" style="display:none; margin-top:8px;">
+                        <input type="text" id="mua_khac_input" placeholder="Nhập mùa khác..." style="padding:6px 10px; border:1px solid #ccc; border-radius:8px; font-size:14px; width:100%; box-sizing:border-box;" onkeydown="if(event.key==='Enter'){event.preventDefault();confirmKhac('mua');}">
+                        <p style="font-size:11px; color:#999; margin:4px 0 0;">Nhấn Enter để xác nhận</p>
+                    </div>
+                </div>
+
+
+            </div>
+        </main>
+
+        <!-- Bottom Action Buttons -->
+        <footer class="action-footer" style="justify-content: center; display: flex; gap: 12px; padding: 0 20px 20px;">
+            {% if trang_phuc_id %}
+            <button type="button" id="btnCancelEdit" class="sheet-cancel has-tap" style="flex:1; max-width: 343px; margin-top:0; border: 1px solid var(--xamdam); background: var(--trang); color: var(--den); border-radius: 12px; font-weight: 600;" onclick="window.history.back()">Hoàn tác</button>
+            <button type="button" id="btnSubmitOutfit" class="btn-solid has-tap" style="flex:1; max-width: 343px;">Lưu thay đổi</button>
+            {% else %}
+            <button type="button" id="btnSubmitOutfit" class="btn-solid has-tap" style="width: 100%; max-width: 343px;">Lưu vào bộ trang phục</button>
+            {% endif %}
+        </footer>
+    </div>
+    
+    <!-- Popup Tủ Đồ -->
+    <div class="sheet-overlay" id="wardrobeSheetOverlay" hidden style="position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 100; opacity: 0; pointer-events: none; transition: opacity 0.3s;"></div>
+    <div class="bottom-sheet" id="wardrobeActionSheet" hidden style="position: fixed; bottom: 0; left: 0; width: 100%; height: 95vh; background: #fff; border-radius: 24px 24px 0 0; padding: 20px 20px 0; z-index: 101; transform: translateY(100%); transition: transform 0.3s ease-out; display: flex; flex-direction: column; box-shadow: 0 -4px 20px rgba(0,0,0,0.1);">
+        
+        <!-- Header -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-shrink: 0;">
+            <button type="button" class="close-btn has-tap" id="closeWardrobeSheet" aria-label="Đóng" style="background: none; border: none; padding: 4px; cursor: pointer; margin-left: -4px;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+            <button type="button" id="btnNextWardrobe" class="has-tap" style="background: #111; color: #fff; border: none; padding: 10px 16px; border-radius: 8px; font-weight: 600; font-size: 14px; cursor: pointer;">Tiếp theo</button>
+        </div>
+
+        <!-- Tabs -->
+        <div class="wardrobe-tabs scroll-area" style="display: flex; gap: 20px; overflow-x: auto; margin-bottom: 16px; border-bottom: 1px solid #eee; padding-bottom: 0; scrollbar-width: none; flex-shrink: 0;">
+            <button type="button" class="tab active" data-category="all" style="background: none; border: none; font-weight: 700; color: #111; font-size: 15px; position: relative; white-space: nowrap; padding-bottom: 12px; cursor: pointer;">
+                Tất cả
+                <div class="tab-indicator" style="position: absolute; bottom: -1px; left: 0; width: 100%; height: 2px; background: #111;"></div>
+            </button>
+            {% for dm in danh_muc_list %}
+            <button type="button" class="tab" data-category="{{ dm.ma_danh_muc }}" style="background: none; border: none; font-weight: 500; color: #777; font-size: 15px; white-space: nowrap; padding-bottom: 12px; position: relative; cursor: pointer;">
+                {{ dm.ten_danh_muc }}
+                <div class="tab-indicator" style="position: absolute; bottom: -1px; left: 0; width: 100%; height: 2px; background: #111; display: none;"></div>
+            </button>
+            {% endfor %}
+        </div>
+
+        <!-- Search & Filter -->
+        <div class="search-filter-row" style="display: flex; gap: 12px; margin-bottom: 20px; flex-shrink: 0;">
+            <button type="button" class="filter-btn has-tap" style="width: 46px; height: 46px; min-width: 46px; border-radius: 8px; border: 1px solid #ddd; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="1.5"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg>
+            </button>
+            <div class="search-box" style="flex: 1; border: 1px solid #bbb; border-radius: 8px; display: flex; align-items: center; padding: 0 12px; background: #fff;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <input type="text" id="wardrobeSearchInput" placeholder="Tìm kiếm" style="border: none; outline: none; background: transparent; padding: 12px 8px; width: 100%; font-size: 15px;">
+            </div>
+        </div>
+
+        <!-- Items Grid -->
+        <div class="wardrobe-grid scroll-area" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; overflow-y: auto; padding-bottom: 40px; flex: 1;">
+            {% for mon in mon_do_list %}
+            <div class="wardrobe-item has-tap" data-category="{{ mon.danh_muc.ma_danh_muc }}" onclick="toggleSelectWardrobeItem(this, '{{ mon.image_url }}', '{{ mon.ten_mon_do|escapejs }}', '{{ mon.ma_mon_do }}')" style="cursor: pointer; display: flex; flex-direction: column; gap: 8px;">
+                <div style="position: relative; border-radius: 8px; overflow: hidden; background: #f5f5f5; aspect-ratio: 3/4; display: flex; align-items: center; justify-content: center; padding: 4px;">
+                    <img src="{{ mon.image_url }}" alt="{{ mon.ten_mon_do }}" style="width: 100%; height: 100%; object-fit: contain; display: block;">
+                    <div class="select-circle" style="position: absolute; top: 12px; right: 12px; width: 22px; height: 22px; border-radius: 50%; background: #fff; border: 1px solid #ddd; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">
+                        <svg class="check-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" style="opacity: 0; transform: scale(0.5); transition: all 0.2s;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    </div>
+                </div>
+                <span class="wardrobe-item-name" style="font-size: 13px; font-weight: 600; color: #444;">{{ mon.ten_mon_do }}</span>
+            </div>
+            {% endfor %}
+            {% if not mon_do_list %}
+            <p style="grid-column: span 2; text-align: center; color: #666; margin-top: 40px;">Chưa có món đồ nào trong tủ đồ.</p>
+            {% endif %}
+        </div>
+    </div>
+    <!-- Success Popup -->
+    <div id="successPopup" onclick="this.style.display='none'" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 10000; align-items: center; justify-content: center; animation: fadeIn 0.3s ease-out;">
+        <div style="background: white; padding: 32px 24px; border-radius: 20px; text-align: center; max-width: 320px; width: 85%; transform: scale(0.9); animation: zoomIn 0.3s ease-out forwards; box-shadow: 0 10px 25px rgba(0,0,0,0.1);" onclick="event.stopPropagation()">
+            <!-- Blue circle with white checkmark -->
+            <div style="width: 72px; height: 72px; background-color: #13629b; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+            </div>
+            
+            <h3 style="margin: 0 0 12px; font-size: 20px; font-weight: 700; color: #111; line-height: 1.3;">
+                Lưu trang phục thành công
+            </h3>
+            
+            <p style="margin: 0; font-size: 14px; color: #888; line-height: 1.5;">
+                Trang phục đã được lưu vào tủ đồ của bạn!
+            </p>
+        </div>
+    </div>
+    <style>
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes zoomIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    </style>
+    <!-- Script chung -->
+    <script>
+        window.TRANG_PHUC_DATA = {{ trang_phuc_data|safe|default:"null" }};
+        window.DAY_OUTFITS_DATA = {{ day_outfits_data|safe|default:"null" }};
+    </script>
+    <script src="../../static/js/chinh_sua_trang_phuc.js?v=101"></script>
+</body>
+</html>

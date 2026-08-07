@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xem trang phục</title>
+    <link rel="stylesheet" href="../../static/css/_tap.css">
+    <link rel="stylesheet" href="../../static/css/xem_trang_phuc.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Status Bar & Header -->
+        <header class="app-header">
+            <div class="nav-bar">
+                <button class="nav-arrow has-tap" type="button" aria-label="Trang phục trước">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                </button>
+                <h1 class="screen-title">Trang phục 1</h1>
+                <button class="nav-arrow has-tap" type="button" aria-label="Trang phục sau">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content scroll-area">
+            <!-- Clothing Items Grid -->
+            <div class="clothing-grid">
+                <div class="clothing-item has-tap">
+                    <img src="https://via.placeholder.com/120x150/0f172a/ffffff?text=Shirt" alt="Áo sơ mi">
+                </div>
+                <div class="clothing-item has-tap">
+                    <img src="https://via.placeholder.com/120x150/2563eb/ffffff?text=Jeans" alt="Quần jeans">
+                </div>
+                <div class="clothing-item has-tap">
+                    <img src="https://via.placeholder.com/120x150/1e293b/ffffff?text=Hoodie" alt="Áo hoodie">
+                </div>
+                <button class="clothing-item add-new-item has-tap">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#A0AAB5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                </button>
+            </div>
+
+            <!-- Details Section -->
+            <div class="details-section">
+                <!-- Info Row -->
+                <div class="detail-row">
+                    <span class="detail-label">Thông tin trang phục</span>
+                    <input type="text" class="detail-input" placeholder="Mô tả trang phục này">
+                </div>
+
+                <!-- Occasion Row -->
+                <button class="detail-row clickable-row has-tap">
+                    <span class="detail-label">Dịp</span>
+                    <div class="detail-value-group">
+                        <span class="detail-value">Thêm dịp</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#A0AAB5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+                    </div>
+                </button>
+
+                <!-- Rating Row -->
+                <div class="detail-row">
+                    <span class="detail-label">Đánh giá của tôi</span>
+                    <div class="rating-stars">
+                        <!-- Ô hiển thị số sao (bên trái) -->
+                        <span class="rating-count">0</span>
+                        <!-- 5 ngôi sao: bấm sao thứ N -> bôi vàng N sao -->
+                        <svg class="star" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
+                        <svg class="star" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
+                        <svg class="star" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
+                        <svg class="star" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
+                        <svg class="star" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Bottom Action Buttons -->
+        <footer class="action-footer">
+            <button class="btn-outline has-tap">Hoàn tác</button>
+            <button class="btn-solid has-tap">Lưu thay đổi</button>
+        </footer>
+    </div>
+    <script src="../../static/js/xem_trang_phuc.js"></script>
+</body>
+</html>

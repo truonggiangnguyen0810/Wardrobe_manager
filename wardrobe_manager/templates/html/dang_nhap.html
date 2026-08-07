@@ -1,0 +1,67 @@
+{% load static %}
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập</title>
+    <link rel="stylesheet" href="{% static 'css/_tap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/dang_nhap.css' %}">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Main Content -->
+        <main class="login-card">
+            <div class="header-section">
+                <h1 class="title">Đăng nhập</h1>
+                <p class="subtitle">Chào mừng bạn quay lại với Wardrobe Manager</p>
+            </div>
+            
+            {% if form.non_field_errors %}
+            <div class="error-msg" style="color:var(--do, #e53936);text-align:center;margin-bottom:16px;font-weight:600;">
+                {{ form.non_field_errors|join:", " }}
+            </div>
+            {% endif %}
+
+            <form class="login-form" method="post" id="loginForm">
+                {% csrf_token %}
+                <div class="input-group">
+                    <label for="phone">Số điện thoại</label>
+                    <div class="input-wrapper">
+                        <input type="tel" id="phone" name="so_dien_thoai" inputmode="numeric" maxlength="10" placeholder="Nhập số điện thoại" value="{{ form.so_dien_thoai.value|default:'' }}">
+                    </div>
+                    <span class="error-msg" id="phone-error"></span>
+                </div>
+                <div class="input-group">
+                    <label for="password">Mật khẩu</label>
+                    <div class="input-wrapper">
+                        <input type="password" id="password" name="mat_khau" placeholder="Mật khẩu" aria-label="Mật khẩu">
+                        <button type="button" id="toggle-password" class="btn-icon icon-right has-tap" aria-label="Hiện mật khẩu">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                        </button>
+                    </div>
+                    <span class="error-msg" id="password-error"></span>
+                </div>
+                <button type="submit" class="btn-primary has-tap" id="submitBtn">Đăng nhập</button>
+            </form>
+            <div class="forgot-password">
+                <a href="{% url 'quen_mat_khau' %}" class="has-tap">Quên mật khẩu?</a>
+            </div>
+            <div class="footer-section">
+                <p>Chưa có tài khoản? <a href="{% url 'dang_ky_sdt' %}" class="has-tap">Đăng ký ngay</a></p>
+            </div>
+        </main>
+    </div>
+    <script src="{% static 'js/dang_nhap.js' %}?v=3"></script>
+    <script>
+        // Hiển thị lỗi từ backend nếu có (vào trực tiếp các thẻ error-msg)
+        {% if form.so_dien_thoai.errors %}
+            document.getElementById('phone-error').textContent = "{{ form.so_dien_thoai.errors|join:', ' }}";
+            document.getElementById('phone').classList.add('is-error');
+        {% endif %}
+        {% if form.mat_khau.errors %}
+            document.getElementById('password-error').textContent = "{{ form.mat_khau.errors|join:', ' }}";
+            document.getElementById('password').classList.add('is-error');
+        {% endif %}
+    </script>
+</body>
+</html>

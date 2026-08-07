@@ -1,0 +1,51 @@
+{% load static %}
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title|default:"Đăng Ký - Wardrobe Manager" }}</title>
+    <link rel="stylesheet" href="{% static 'css/_tap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/tao_tai_khoan.css' %}">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="header-section">
+                <h1 class="title">{{ title|default:"Tạo tài khoản mới" }}</h1>
+                <p class="subtitle">{{ subtitle|default:"Vui lòng nhập số điện thoại của bạn để bắt đầu" }}</p>
+            </div>
+
+            {% if form.non_field_errors %}
+            <div class="error-msg" style="text-align:center;color:#e53936;margin-bottom:12px">
+                {{ form.non_field_errors|join:", " }}
+            </div>
+            {% endif %}
+
+            <form method="post" id="registerForm" class="form-group">
+                {% csrf_token %}
+                <label class="form-label">Số điện thoại</label>
+                <div class="phone-input-group" id="phoneWrapper">
+                    <span class="phone-prefix">+84</span>
+                    <input type="tel" class="phone-input" id="phone" name="so_dien_thoai" placeholder="Nhập số điện thoại" maxlength="10" inputmode="numeric" value="{{ form.so_dien_thoai.value|default:'' }}">
+                </div>
+                <span class="error-msg" id="phone-error">
+                    {% if form.so_dien_thoai.errors %}
+                        {{ form.so_dien_thoai.errors|join:", " }}
+                    {% endif %}
+                </span>
+
+                <button type="submit" class="btn-primary has-tap" id="submitBtn" style="margin-top: 32px;">
+                    {{ button_text|default:"Tiếp tục" }}
+                </button>
+            </form>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Đã có tài khoản? <a href="{% url 'login' %}" class="link-login has-tap">Đăng nhập ngay</a></p>
+        </footer>
+    </div>
+    <script src="{% static 'js/tao_tai_khoan.js' %}?v=1"></script>
+</body>
+</html>

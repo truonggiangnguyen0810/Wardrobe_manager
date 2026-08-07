@@ -1,0 +1,201 @@
+/* --- Root Variables & Reset --- */
+:root {
+    --card-bg: var(--trang);
+    --primary-blue: var(--xanhnhat); /* Màu xanh của tiêu đề / link */
+    --text-dark: var(--textchinh);
+    --text-gray: var(--textphu);
+    --input-bg: var(--xamnhat);
+    --btn-bg: var(--den);
+    --border-color: var(--xamnhat);
+}
+
+/* --- Khung ứng dụng: căn giữa card + cuộn được (ghi đè _base.css) --- */
+.app-container {
+    justify-content: center;
+    align-items: center;
+    overflow-y: auto;
+    padding: 0;
+    scrollbar-width: none;
+}
+.app-container::-webkit-scrollbar { display: none; }
+
+/* --- Login Card --- */
+.login-card {
+    width: 100%;
+    flex: 1;
+    background-color: var(--card-bg);
+    border-radius: 0;
+    padding: 40px 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* --- Header Section --- */
+.header-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.title {
+    color: var(--primary-blue);
+    font-size: 26px;
+    font-weight: 800;
+    margin-bottom: 12px;
+    letter-spacing: -0.5px;
+}
+
+.subtitle {
+    color: var(--text-gray);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* --- Form Section --- */
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.input-group label {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-dark);
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.icon-left {
+    position: absolute;
+    left: 16px;
+    pointer-events: none; /* Tránh cản trở thao tác chạm vào input */
+}
+
+.icon-right {
+    position: absolute;
+    right: 12px;
+}
+
+/* Căn chỉnh Input */
+.input-wrapper input {
+    width: 100%;
+    background-color: var(--input-bg);
+    border: 2px solid transparent; /* Chuẩn bị sẵn cho trạng thái active */
+    border-radius: 12px;
+    padding: 16px 48px; /* Dành khoảng trống 2 bên cho icon */
+    font-size: 15px;
+    font-family: inherit;
+    color: var(--text-dark);
+    outline: none;
+    transition: border-color 0.1s ease;
+}
+
+.input-wrapper input::placeholder {
+    color: var(--textphu);
+}
+
+/* Ô số điện thoại: placeholder & số nhập to hơn 110% (15px -> 16.5px) */
+#phone {
+    font-size: 16.5px;
+}
+
+/* Hiệu ứng khi đang nhập liệu */
+.input-wrapper input:focus {
+    border-color: var(--xanhnhat);
+}
+
+/* Ô nhập đang lỗi -> viền đỏ */
+.input-wrapper input.is-error {
+    border-color: var(--do);
+}
+
+/* Thông báo lỗi bên dưới ô nhập */
+.error-msg {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--do);
+    min-height: 16px;
+    padding-left: 4px;
+}
+
+/* Nút con mắt hiển thị mật khẩu */
+.btn-icon {
+    background: none;
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+    color: var(--textphu);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* --- Primary Button --- */
+.btn-primary {
+    background-color: var(--btn-bg);
+    color: var(--trang);
+    border: none;
+    border-radius: 12px;
+    padding: 18px;
+    font-size: 16px;
+    font-weight: 600;
+    font-family: inherit;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    margin-top: 12px;
+}
+
+/* --- Links & Footer --- */
+.forgot-password {
+    text-align: center;
+    margin-top: 24px;
+}
+
+.forgot-password a {
+    color: var(--primary-blue);
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+/* Đường phân cách */
+.divider {
+    border: none;
+    border-top: 1px solid var(--border-color);
+    margin: 32px 16px;
+}
+
+.footer-section {
+    text-align: center;
+    margin-top: 5px;
+}
+
+.footer-section p {
+    color: var(--text-gray);
+    font-size: 14px;
+}
+
+.footer-section a {
+    color: var(--primary-blue);
+    font-weight: 700;
+    text-decoration: none;
+    margin-left: 4px;
+}

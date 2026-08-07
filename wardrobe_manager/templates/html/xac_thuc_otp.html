@@ -1,0 +1,65 @@
+{% load static %}
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xác thực OTP</title>
+    <link rel="stylesheet" href="{% static 'css/_tap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/xac_thuc_otp.css' %}">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Main Content -->
+        <main class="content-wrapper">
+
+            <div class="header-text">
+                <h1 class="title">Xác thực OTP</h1>
+                <p class="subtitle">
+                    Mã xác thực đã được gửi đến số
+                    <!-- NOTE: hiện SĐT lấy từ session (truyền qua view) thay vì hardcode -->
+                    <span class="phone-number">{{ so_dien_thoai }}</span>
+                </p>
+            </div>
+
+            <!-- NOTE: hiện lỗi tổng (VD: "Mã OTP không đúng") -->
+            {% if form.non_field_errors %}
+            <div class="error-msg" style="text-align:center;color:#e53936;margin-bottom:12px">
+                {{ form.non_field_errors|join:", " }}
+            </div>
+            {% endif %}
+
+            <!-- NOTE: form POST gửi OTP lên server -->
+            <form method="post" id="otp-form">
+                {% csrf_token %}
+
+                <!-- NOTE: ô ẩn - JS sẽ nối 6 ô OTP vào đây trước khi submit -->
+                <input type="hidden" name="otp" id="otp-hidden">
+
+                <!-- OTP Input Group -->
+                <div class="otp-group">
+                    <input type="tel" maxlength="1" inputmode="numeric" autocomplete="one-time-code" class="otp-box" aria-label="Mã OTP số 1">
+                    <input type="tel" maxlength="1" inputmode="numeric" class="otp-box" aria-label="Mã OTP số 2">
+                    <input type="tel" maxlength="1" inputmode="numeric" class="otp-box" aria-label="Mã OTP số 3">
+                    <input type="tel" maxlength="1" inputmode="numeric" class="otp-box" aria-label="Mã OTP số 4">
+                    <input type="tel" maxlength="1" inputmode="numeric" class="otp-box" aria-label="Mã OTP số 5">
+                    <input type="tel" maxlength="1" inputmode="numeric" class="otp-box" aria-label="Mã OTP số 6">
+                </div>
+
+                <div class="resend-container">
+                    <p class="resend-text">
+                        Chưa nhận được mã?
+                        <span class="countdown"></span>
+                    </p>
+                </div>
+
+                <!-- Bottom Action Button -->
+                <footer class="bottom-action">
+                    <button type="submit" class="btn-confirm has-tap">Xác nhận</button>
+                </footer>
+            </form>
+
+        </main>
+    </div>
+    <script src="{% static 'js/xac_thuc_otp.js' %}"></script>
+</body>
+</html>

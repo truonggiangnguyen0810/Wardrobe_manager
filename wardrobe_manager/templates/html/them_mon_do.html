@@ -1,0 +1,239 @@
+{% load static %}
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thêm món đồ</title>
+    <link rel="stylesheet" href="{% static 'css/_tap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/them_mon_do.css' %}">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="header-title">Chi tiết món đồ</h1>
+        </header>
+
+        <!-- Main Content -->
+        <main class="content scroll-area">
+            <div class="product-image" id="imgContainer">
+                <img id="previewImg" src="" alt="">
+                <span id="imgPlaceholder" style="color: #999; font-weight: 500;">Chưa có ảnh</span>
+            </div>
+
+            <!-- Nút quét ảnh AI (Chỉ hiện khi có ảnh) -->
+            <div class="ai-scan-actions" id="scanActions" style="display: none; flex-direction: column; align-items: center; margin-top: 12px; margin-bottom: 8px; gap: 10px;">
+                <!-- Nút đổi ảnh (dưới ảnh) -->
+                <button type="button" id="btnToggleScanned" style="padding: 5px 16px; border-radius: 20px; border: 1px solid #888; color: #555; background: transparent; font-weight: 600; font-size: 13px; cursor: pointer; transition: all 0.2s;">Ảnh sau tách nền</button>
+                <!-- 2 nút hành động -->
+                <div style="display: flex; gap: 12px;">
+                    <button type="button" id="btnGetInfo" disabled style="padding: 10px 20px; border-radius: 8px; background: #111; color: #fff; font-weight: 600; border: none; cursor: not-allowed; opacity: 0.4; transition: all 0.2s;">Lấy thông tin</button>
+                    <button type="button" id="btnScanImage" style="padding: 10px 20px; border-radius: 8px; background: #1c64a7; color: #fff; font-weight: 600; border: none; cursor: pointer; transition: all 0.2s;">Tách nền</button>
+                </div>
+            </div>
+
+            <form id="itemForm" method="post" action="{% url 'them_mon_do' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" name="mon_do_id" id="mon_do_id" value="">
+                <input type="hidden" name="next" value="{{ request.GET.next|default:'' }}">
+                
+                <input type="file" id="hinh_anh" name="hinh_anh" accept="image/*" style="display:none;">
+
+                <div class="form-list">
+                    <!-- TÊN -->
+                    <div class="form-item has-tap">
+                        <span class="label">Thông tin item</span>
+                        <div class="value-container">
+                            <input type="text" class="value-input" name="ten_mon_do" id="ten_mon_do" placeholder="Ví dụ: Áo sơ mi">
+                        </div>
+                    </div>
+                    
+                    <!-- DANH MỤC -->
+                    <div class="form-item has-tap" onclick="toggleAccordion('dm_options')">
+                        <span class="label">Danh mục</span>
+                        <div class="value-container">
+                            <span class="value-text" id="dm_text">Chọn danh mục</span>
+                            <svg class="chevron-down" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                    </div>
+                    <div id="dm_options" class="options-accordion" style="display: none; padding: 12px 20px;">
+                        <div id="dm_chips" style="display: flex; flex-wrap: wrap; gap: 8px;">
+                            {% for dm in danh_muc_list %}
+                            <label class="filter-chip">
+                                <input type="radio" name="ma_danh_muc" value="{{ dm.ma_danh_muc }}" data-text="{{ dm.ten_danh_muc }}" style="display:none;" onchange="updateRadioSelection('ma_danh_muc', 'dm_text')">
+                                <span>{{ dm.ten_danh_muc }}</span>
+                            </label>
+                            {% endfor %}
+                            <!-- Chip Khác -->
+                            <span class="filter-chip" id="dm_khac_chip" onclick="showKhacInput('dm', 'radio')" style="cursor:pointer; border-style:dashed;">+ Khác</span>
+                            <input type="radio" name="ma_danh_muc" value="khac" id="dm_khac_radio" style="display:none;" onchange="updateRadioSelection('ma_danh_muc', 'dm_text')">
+                            <input type="hidden" name="danh_muc_khac" id="dm_khac_val" value="">
+                        </div>
+                        <div id="dm_khac_input_wrap" style="display:none; margin-top:8px; display:none;">
+                            <input type="text" id="dm_khac_input" placeholder="Nhập danh mục khác..." style="padding:6px 10px; border:1px solid #ccc; border-radius:8px; font-size:14px; width:100%; box-sizing:border-box;" onkeydown="if(event.key==='Enter'){event.preventDefault();confirmKhac('dm','radio');}">
+                            <p style="font-size:11px; color:#999; margin:4px 0 0;">Nhấn Enter để xác nhận</p>
+                        </div>
+                    </div>
+
+                    <!-- ĐÁNH GIÁ -->
+                    <div class="form-item has-tap" style="border-bottom: 1px solid #eee;">
+                        <span class="label">Đánh giá</span>
+                        <div class="value-container">
+                            <div class="star-rating" id="itemStarRating" style="display: flex; gap: 4px; cursor: pointer; margin-right: 16px;">
+                                <svg class="star" data-value="1" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color: #cccccc; transition: all 0.2s;"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                <svg class="star" data-value="2" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color: #cccccc; transition: all 0.2s;"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                <svg class="star" data-value="3" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color: #cccccc; transition: all 0.2s;"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                <svg class="star" data-value="4" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color: #cccccc; transition: all 0.2s;"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                <svg class="star" data-value="5" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color: #cccccc; transition: all 0.2s;"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                            </div>
+                            <input type="hidden" name="danh_gia" id="hiddenItemRating" value="0">
+                        </div>
+                    </div>
+
+                    <!-- MÙA -->
+                    <div class="form-item has-tap" onclick="toggleAccordion('mua_options')">
+                        <span class="label">Mùa</span>
+                        <div class="value-container">
+                            <span class="value-text" id="mua_text">Trống</span>
+                            <svg class="chevron-down" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                    </div>
+                    <div id="mua_options" class="options-accordion" style="display: none; padding: 12px 20px;">
+                        <div id="mua_chips" style="display: flex; flex-wrap: wrap; gap: 8px;">
+                            {% for m in mua_list %}
+                            <label class="filter-chip">
+                                <input type="checkbox" name="mua" value="{{ m.ma_mua }}" data-text="{{ m.ten_mua }}" style="display:none;" onchange="updateCheckboxSelection('mua', 'mua_text')">
+                                <span>{{ m.ten_mua }}</span>
+                            </label>
+                            {% endfor %}
+                            <span class="filter-chip" id="mua_khac_chip" onclick="showKhacInput('mua', 'checkbox')" style="cursor:pointer; border-style:dashed;">+ Khác</span>
+                            <input type="checkbox" name="mua" value="khac" id="mua_khac_cb" style="display:none;">
+                            <input type="hidden" name="mua_khac" id="mua_khac_val" value="">
+                        </div>
+                        <div id="mua_khac_input_wrap" style="display:none; margin-top:8px;">
+                            <input type="text" id="mua_khac_input" placeholder="Nhập mùa khác..." style="padding:6px 10px; border:1px solid #ccc; border-radius:8px; font-size:14px; width:100%; box-sizing:border-box;" onkeydown="if(event.key==='Enter'){event.preventDefault();confirmKhac('mua','checkbox');}">
+                            <p style="font-size:11px; color:#999; margin:4px 0 0;">Nhấn Enter để xác nhận</p>
+                        </div>
+                    </div>
+
+                    <!-- FORM DÁNG -->
+                    <div class="form-item has-tap" onclick="toggleAccordion('form_options')">
+                        <span class="label">Form dáng</span>
+                        <div class="value-container">
+                            <span class="value-text" id="form_text">Trống</span>
+                            <svg class="chevron-down" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                    </div>
+                    <div id="form_options" class="options-accordion" style="display: none; padding: 12px 20px;">
+                        <div id="form_chips" style="display: flex; flex-wrap: wrap; gap: 8px;">
+                            {% for f in form_list %}
+                            <label class="filter-chip">
+                                <input type="checkbox" name="form_dang" value="{{ f.ma_form }}" data-text="{{ f.ten_form }}" style="display:none;" onchange="updateCheckboxSelection('form_dang', 'form_text')">
+                                <span>{{ f.ten_form }}</span>
+                            </label>
+                            {% endfor %}
+                            <span class="filter-chip" id="form_khac_chip" onclick="showKhacInput('form', 'checkbox')" style="cursor:pointer; border-style:dashed;">+ Khác</span>
+                            <input type="checkbox" name="form_dang" value="khac" id="form_khac_cb" style="display:none;">
+                            <input type="hidden" name="form_khac" id="form_khac_val" value="">
+                        </div>
+                        <div id="form_khac_input_wrap" style="display:none; margin-top:8px;">
+                            <input type="text" id="form_khac_input" placeholder="Nhập form dáng khác..." style="padding:6px 10px; border:1px solid #ccc; border-radius:8px; font-size:14px; width:100%; box-sizing:border-box;" onkeydown="if(event.key==='Enter'){event.preventDefault();confirmKhac('form','checkbox');}">
+                            <p style="font-size:11px; color:#999; margin:4px 0 0;">Nhấn Enter để xác nhận</p>
+                        </div>
+                    </div>
+
+                    <!-- DỊP (PHONG CÁCH) -->
+                    <div class="form-item has-tap" onclick="toggleAccordion('pc_options')">
+                        <span class="label">Dịp</span>
+                        <div class="value-container">
+                            <span class="value-text" id="pc_text">Trống</span>
+                            <svg class="chevron-down" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                    </div>
+                    <div id="pc_options" class="options-accordion" style="display: none; padding: 12px 20px;">
+                        <div id="pc_chips" style="display: flex; flex-wrap: wrap; gap: 8px;">
+                            {% for p in phong_cach_list %}
+                            <label class="filter-chip">
+                                <input type="checkbox" name="phong_cach" value="{{ p.ma_phong_cach }}" data-text="{{ p.ten_phong_cach }}" style="display:none;" onchange="updateCheckboxSelection('phong_cach', 'pc_text')">
+                                <span>{{ p.ten_phong_cach }}</span>
+                            </label>
+                            {% endfor %}
+                            <span class="filter-chip" id="pc_khac_chip" onclick="showKhacInput('pc', 'checkbox')" style="cursor:pointer; border-style:dashed;">+ Khác</span>
+                            <input type="checkbox" name="phong_cach" value="khac" id="pc_khac_cb" style="display:none;">
+                            <input type="hidden" name="phong_cach_khac" id="pc_khac_val" value="">
+                        </div>
+                        <div id="pc_khac_input_wrap" style="display:none; margin-top:8px;">
+                            <input type="text" id="pc_khac_input" placeholder="Nhập dịp khác..." style="padding:6px 10px; border:1px solid #ccc; border-radius:8px; font-size:14px; width:100%; box-sizing:border-box;" onkeydown="if(event.key==='Enter'){event.preventDefault();confirmKhac('pc','checkbox');}">
+                            <p style="font-size:11px; color:#999; margin:4px 0 0;">Nhấn Enter để xác nhận</p>
+                        </div>
+                    </div>
+
+                    <!-- MÀU SẮC -->
+                    <div class="form-item has-tap" onclick="toggleAccordion('ms_options')">
+                        <span class="label">Màu sắc</span>
+                        <div class="value-container">
+                            <span class="value-text" id="ms_text">Trống</span>
+                            <svg class="chevron-down" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                    </div>
+                    <div id="ms_options" class="options-accordion" style="display: none; padding: 12px 20px;">
+                        <div id="ms_chips" style="display: flex; flex-wrap: wrap; gap: 8px;">
+                            {% for c in mau_sac_list %}
+                            <label class="filter-chip">
+                                <input type="checkbox" name="mau_sac" value="{{ c.ma_mau_sac }}" data-text="{{ c.ten_mau_sac }}" style="display:none;" onchange="updateCheckboxSelection('mau_sac', 'ms_text')">
+                                <span>{{ c.ten_mau_sac }}</span>
+                            </label>
+                            {% endfor %}
+                            <span class="filter-chip" id="ms_khac_chip" onclick="showKhacInput('ms', 'checkbox')" style="cursor:pointer; border-style:dashed;">+ Khác</span>
+                            <input type="checkbox" name="mau_sac" value="khac" id="ms_khac_cb" style="display:none;">
+                            <input type="hidden" name="mau_sac_khac" id="ms_khac_val" value="">
+                        </div>
+                        <div id="ms_khac_input_wrap" style="display:none; margin-top:8px;">
+                            <input type="text" id="ms_khac_input" placeholder="Nhập màu sắc khác..." style="padding:6px 10px; border:1px solid #ccc; border-radius:8px; font-size:14px; width:100%; box-sizing:border-box;" onkeydown="if(event.key==='Enter'){event.preventDefault();confirmKhac('ms','checkbox');}">
+                            <p style="font-size:11px; color:#999; margin:4px 0 0;">Nhấn Enter để xác nhận</p>
+                        </div>
+                    </div>
+
+                    <!-- CHẤT LIỆU -->
+                    <div class="form-item has-tap" onclick="toggleAccordion('cl_options')">
+                        <span class="label">Chất liệu</span>
+                        <div class="value-container">
+                            <span class="value-text" id="cl_text">Trống</span>
+                            <svg class="chevron-down" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                    </div>
+                    <div id="cl_options" class="options-accordion" style="display: none; padding: 12px 20px;">
+                        <div id="cl_chips" style="display: flex; flex-wrap: wrap; gap: 8px;">
+                            {% for cl in chat_lieu_list %}
+                            <label class="filter-chip">
+                                <input type="checkbox" name="chat_lieu" value="{{ cl.ma_chat_lieu }}" data-text="{{ cl.ten_chat_lieu }}" style="display:none;" onchange="updateCheckboxSelection('chat_lieu', 'cl_text')">
+                                <span>{{ cl.ten_chat_lieu }}</span>
+                            </label>
+                            {% endfor %}
+                            <span class="filter-chip" id="cl_khac_chip" onclick="showKhacInput('cl', 'checkbox')" style="cursor:pointer; border-style:dashed;">+ Khác</span>
+                            <input type="checkbox" name="chat_lieu" value="khac" id="cl_khac_cb" style="display:none;">
+                            <input type="hidden" name="chat_lieu_khac" id="cl_khac_val" value="">
+                        </div>
+                        <div id="cl_khac_input_wrap" style="display:none; margin-top:8px;">
+                            <input type="text" id="cl_khac_input" placeholder="Nhập chất liệu khác..." style="padding:6px 10px; border:1px solid #ccc; border-radius:8px; font-size:14px; width:100%; box-sizing:border-box;" onkeydown="if(event.key==='Enter'){event.preventDefault();confirmKhac('cl','checkbox');}">
+                            <p style="font-size:11px; color:#999; margin:4px 0 0;">Nhấn Enter để xác nhận</p>
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+        </main>
+
+        <!-- Bottom Actions -->
+        <footer class="footer">
+            <button type="button" class="btn-secondary has-tap" id="btnDelete">Hoàn tác</button>
+            <button type="button" class="btn-primary has-tap" id="btnSave">Lưu thay đổi</button>
+        </footer>
+    </div>
+    <script>
+        window.WARDROBE_SOURCE = "{{ source|default:'' }}";
+        window.MON_DO_DATA = {{ mon_do_data|default:"null"|safe }};
+    </script>
+    <script src="{% static 'js/them_mon_do.js' %}?v=3"></script>
+</body>
+</html>

@@ -1,0 +1,108 @@
+/* RESET & BIẾN CƠ BẢN */
+:root {
+    --text-primary: var(--textchinh);
+    --text-muted: var(--textphu);
+    --btn-bg: var(--den);
+}
+
+/* HEADER */
+.header {
+    position: sticky; top: 0; z-index: 5; flex-shrink: 0;
+    background-color: var(--maunen);
+    padding: 0 20px; display: flex; align-items: center; justify-content: center; height: 60px;
+    box-shadow: 0 1px 0 var(--xamdam);
+}
+.header-title { font-size: 18px; font-weight: 700; color: var(--text-primary); }
+
+/* MAIN CONTENT - tự cuộn, chừa chỗ cho footer cố định */
+.content { flex: 1; overflow-y: auto; padding-bottom: 110px; scrollbar-width: none; }
+.content::-webkit-scrollbar { display: none; }
+
+/* AVATAR */
+.avatar-section { display: flex; justify-content: center; padding: 20px 0; }
+.avatar-wrapper { position: relative; }
+.avatar { width: 140px; height: 140px; border-radius: 50%; object-fit: cover; }
+.edit-avatar {
+    position: absolute; bottom: 5px; right: 5px;
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--trang); border: 1px solid var(--xamnhat);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+/* FORM LIST */
+.form-list { padding: 20px; display: flex; flex-direction: column; gap: 24px; }
+.form-item { display: flex; justify-content: space-between; align-items: center; }
+.label { color: var(--text-muted); font-size: 16px; }
+.value-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-primary);
+    text-align: right;
+    font-family: inherit;
+}
+.value-input::placeholder { color: var(--textphu); }
+.value-select {
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-primary);
+    font-family: inherit;
+    cursor: pointer;
+}
+button.form-item {
+    width: 100%;
+    background: none;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    font-family: inherit;
+    justify-content: flex-start;
+    gap: 4px;
+}
+.chevron { color: var(--text-muted); flex-shrink: 0; }
+
+/* FOOTER - giống chi tiết món đồ */
+.footer {
+    position: absolute; bottom: 0; left: 0; width: 100%; height: 90px;
+    padding: 0 24px; display: flex; align-items: center; gap: 16px;
+    background-color: var(--maunen); border-top: 1px solid var(--xamdam); z-index: 10;
+}
+.btn-submit {
+    flex: 1; padding: 16px 0; border-radius: 12px;
+    background-color: var(--btn-bg); color: var(--trang);
+    font-family: inherit;
+}
+
+/* ACTION SHEET (Popup Chọn Ảnh) */
+.sheet-overlay {
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.5); z-index: 100;
+    opacity: 0; transition: opacity 0.3s ease;
+}
+.sheet-overlay.show { opacity: 1; }
+
+.action-sheet {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: var(--trang, #fff);
+    border-top-left-radius: 20px; border-top-right-radius: 20px;
+    padding: 24px 20px; z-index: 101;
+    display: flex; flex-direction: column; gap: 12px;
+    transform: translateY(100%); transition: transform 0.3s ease;
+}
+.action-sheet.show { transform: translateY(0); }
+
+.sheet-item, .sheet-cancel {
+    width: 100%; padding: 16px; border-radius: 12px;
+    font-size: 16px; font-weight: 600; text-align: center;
+    border: none; cursor: pointer; font-family: inherit;
+}
+.sheet-item { background: var(--xamnhat, #f5f5f5); color: var(--text-primary); }
+.sheet-cancel { background: transparent; color: var(--do, #e53936); margin-top: 8px; }

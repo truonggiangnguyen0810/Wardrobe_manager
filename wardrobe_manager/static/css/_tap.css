@@ -1,0 +1,73 @@
+/* Nạp cấu trúc chung (reset, body, khung app, bottom-nav) */
+@import url('_base.css');
+
+/* ============================================
+   FILE QUY TẮC CHUNG CHO HIỆU ỨNG BẤM NÚT
+   - Đổi giá trị ở đây = đổi toàn app
+   - KHÔNG cần đụng tới 18 file CSS khác
+============================================ */
+
+:root {
+    /* ====== MÀU CHÍNH CỦA WEB (đổi ở đây = đổi toàn app) ====== */
+    --xamnhat: #e8e5e5;   /* màu xám nhạt */
+    --xamdam: rgba(93, 93, 93, 1);
+    --xanhnhat: #135E9B;  /* màu xanh dương chính (tiêu đề, link) */
+    --do: #FF0D0D;        /* màu đỏ (cảnh báo, đăng xuất) */
+    --den: rgba(0, 0, 0, 1);
+    --maunen: rgba(251, 249, 249, 1);
+    --trang: #FFFFFF;        /* màu trắng (nền thẻ/nav/nút, chữ trắng) */
+    --textchinh: rgba(0, 0, 0, 1);
+    --textphu: rgba(156, 163, 175, 1);
+
+    /* ====== CẤU HÌNH HIỆU ỨNG BẤM ====== */
+    --tap-opacity: 0.55;
+    --tap-duration: 0.2s;
+    --tap-easing: ease;
+
+    /* ====== CHIỀU CAO ỨNG DỤNG (đổi 1 chỗ = đổi toàn app) ====== */
+    --app-height: 100dvh; /* chiều cao động, tự khớp khi address bar ẩn/hiện */
+}
+
+/* ====== CLASS TIỆN ÍCH - gắn vào nút nào muốn có hiệu ứng ====== */
+.has-tap {
+    transition: opacity var(--tap-duration) var(--tap-easing);
+    cursor: pointer;
+}
+
+.has-tap:active {
+    opacity: var(--tap-opacity);
+}
+
+/* ====== TRẠNG THÁI ĐẶC BIỆT ====== */
+
+/* Nút quan trọng (đỏ, cảnh báo) - mờ nhẹ hơn */
+.has-tap-strong {
+    transition: opacity var(--tap-duration) var(--tap-easing);
+    cursor: pointer;
+}
+.has-tap-strong:active {
+    opacity: 0.7;
+}
+
+/* Nút đang được chọn - KHÔNG có hiệu ứng mờ */
+.has-tap.is-selected:active,
+.has-tap.is-active:active {
+    opacity: 1;
+}
+
+/* ============================================
+   LỚP TIỆN ÍCH CHO VÙNG CUỘN
+   - Gắn class "scroll-area" vào vùng cuộn của trang
+   - Cảm giác lướt mượt: quán tính + chặn lan truyền cuộn
+   - Đổi ở đây = áp dụng cho mọi trang có gắn class
+============================================ */
+html, body {
+    overscroll-behavior: contain;      /* chặn cuộn lan ra ngoài (mọi trang) */
+    -webkit-overflow-scrolling: touch;  /* quán tính vuốt (mọi trang) */
+}
+
+.scroll-area {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch; /* quán tính vuốt (iOS cũ) */
+    overscroll-behavior: contain;      /* chặn cuộn lan ra cha/body */
+}

@@ -1,0 +1,147 @@
+/* --- Variables & Reset --- */
+:root {
+    --bg-app: var(--trang);
+    --text-main: var(--textchinh);
+    --text-secondary: var(--textphu); /* Màu xám cho chữ trong tag */
+    --tag-bg: var(--xamnhat); /* Màu nền xám cực nhạt của tag */
+    --border-color: var(--xamnhat);
+    --btn-solid-bg: var(--textchinh);
+    --btn-solid-text: var(--trang);
+    --font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* --- Header --- */
+.app-header {
+    position: relative;
+    z-index: 10;
+    transform: translateZ(0);
+    background-color: var(--bg-app);
+    padding: 0 20px;
+    height: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-shadow: 0 1px 0 var(--xamdam);
+}
+
+.nav-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.screen-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.btn-icon {
+    background: none;
+    border: none;
+    padding: 8px;
+    margin-right: -8px; /* Cân bằng lề phải */
+    cursor: pointer;
+    display: flex;
+}
+
+.nav-spacer {
+    width: 40px; /* Bằng kích thước nút bấm để title nằm giữa */
+}
+
+/* --- Main Filter Content --- */
+.filter-content {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    overflow-y: auto; /* Cho phép cuộn nội dung */
+    padding: 16px 24px;
+    padding-bottom: 40px;
+}
+
+/* --- Filter Groups --- */
+.filter-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.group-header {
+    background: none;
+    border: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 16px 0;
+    cursor: pointer;
+}
+
+.group-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+/* --- Filter Tags (Pills) --- */
+.group-body {
+    display: flex;
+    flex-wrap: wrap; /* Tự động rớt dòng */
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.filter-tag {
+    background-color: var(--tag-bg);
+    color: var(--text-secondary);
+    border: none;
+    border-radius: 20px; /* Hình con nhộng */
+    padding: 10px 18px;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+}
+
+/* Divider Lines */
+.divider {
+    border: none;
+    border-top: 1px solid var(--border-color);
+    margin: 8px 0;
+}
+
+.scroll-spacer {
+    height: 40px; /* Đệm phía dưới nội dung cuộn */
+}
+
+/* --- Bottom Footer --- */
+.filter-footer {
+    height: 90px;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background-color: var(--bg-app);
+    border-top: 1px solid var(--xamdam);
+}
+
+.filter-footer button {
+    flex: 1;
+    padding: 16px 0;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+}
+
+.btn-reset {
+    background-color: var(--bg-app);
+    color: var(--text-main);
+    border: 1px solid var(--text-main);
+}
+
+.btn-apply {
+    background-color: var(--btn-solid-bg);
+    color: var(--btn-solid-text);
+    border: none;
+}

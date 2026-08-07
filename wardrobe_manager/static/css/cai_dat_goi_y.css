@@ -1,0 +1,102 @@
+/* HEADER - giống chi tiết món đồ */
+.header {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    flex-shrink: 0;
+    background-color: var(--maunen);
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 60px;
+    box-shadow: 0 1px 0 var(--xamdam);
+}
+
+.header-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--textchinh);
+}
+
+/* MAIN CONTENT - tự cuộn, chừa chỗ cho footer cố định */
+.content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px 20px 110px;
+    display: flex;
+    flex-direction: column;
+    scrollbar-width: none;
+}
+.content::-webkit-scrollbar { display: none; }
+
+/* TEXTAREA */
+.textarea-wrapper {
+    width: 100%;
+    background-color: var(--xamnhat);
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 8px;
+}
+
+.custom-textarea {
+    width: 100%;
+    height: 280px;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 15px;
+    font-family: inherit;
+    color: var(--textchinh);
+    line-height: 1.5;
+    resize: none;
+}
+
+.custom-textarea::placeholder {
+    color: var(--textphu);
+}
+
+/* ĐẾM KÝ TỰ */
+.char-count {
+    text-align: right;
+    font-size: 14px;
+    color: var(--textphu);
+    font-weight: 400;
+    margin-bottom: 24px;
+    padding-right: 4px;
+}
+
+.char-count.max-reached {
+    font-weight: 700;
+    color: var(--do);
+}
+
+/* FOOTER - giống chi tiết món đồ */
+.footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 90px;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background-color: var(--maunen);
+    border-top: 1px solid var(--xamdam);
+    z-index: 10;
+}
+
+/* NÚT XÁC NHẬN - dạng solid giống chi tiết món đồ */
+.btn-confirm {
+    flex: 1;
+    padding: 16px 0;
+    border-radius: 12px;
+    background-color: var(--den);
+    color: var(--trang);
+    border: none;
+    font-size: 16px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+}

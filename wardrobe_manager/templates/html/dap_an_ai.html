@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trợ lý AI - Gợi ý trang phục</title>
+    <link rel="stylesheet" href="../../static/css/_tap.css">
+    <link rel="stylesheet" href="../../static/css/dap_an_ai.css">
+</head>
+<body>
+    <div class="app-container">
+        
+        <!-- Header có nền màu kéo dài -->
+        <header class="ai-header">
+            <div class="header-actions">
+                <button class="icon-btn has-tap" aria-label="Lịch">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                </button>
+                <button class="icon-btn has-tap" aria-label="Thông báo">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                </button>
+                <div class="avatar-dropdown-wrap">
+                    {% if user.ho_so.anh_dai_dien %}
+                        <img src="/media/{{ user.ho_so.anh_dai_dien }}" alt="Avatar" class="avatar has-tap avatar-toggle" onerror="this.onerror=null;this.src='/static/img/base-avatar.jpg'">
+                    {% else %}
+                        <img src="{% static 'img/base-avatar.jpg' %}" alt="Avatar" class="avatar has-tap avatar-toggle">
+                    {% endif %}
+                    <div class="avatar-dropdown-menu">
+                        <a href="{% url 'quan_li_trang_ca_nhan' %}" class="avatar-dropdown-item">Quản lý thông tin cá nhân</a>
+                        <a href="{% url 'cap_nhat_mat_khau' %}" class="avatar-dropdown-item">Cập nhật mật khẩu</a>
+                    </div>
+                </div>
+            </div>
+            <p class="ai-message">Hãy để tôi giúp bạn chọn ra những item phù hợp nhất</p>
+        </header>
+
+        <!-- Phần thân đoạn chat -->
+        <main class="chat-body scroll-area">
+            
+            <!-- Card kết quả AI -->
+            <div class="ai-result-card">
+                <div class="clothing-images">
+                    <img src="https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=200&q=80" alt="Áo sơ mi xanh" class="cloth-item">
+                    <img src="https://images.unsplash.com/photo-1542272604-787c3835535d?w=200&q=80" alt="Quần jean" class="cloth-item">
+                </div>
+                
+                <div class="card-actions">
+                    <div class="rating-stars">
+                        <span class="rating-count">0</span>
+                        <svg class="star" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
+                        <svg class="star" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
+                        <svg class="star" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
+                        <svg class="star" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
+                        <svg class="star" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/></svg>
+                    </div>
+                    <button class="btn-save has-tap">Lưu</button>
+                </div>
+            </div>
+
+            <!-- Lời giải thích của AI -->
+            <p class="ai-description">Một chiếc áo sơ mi basic kết hợp với quần jean sẽ rất phù hợp với dresscode của buổi đi chơi của bạn.</p>
+
+        </main>
+
+        <!-- Thanh nhập liệu ở đáy -->
+        <footer class="chat-footer">
+            <div class="input-container">
+                <input type="text" placeholder="Nhập tin nhắn" class="chat-input" aria-label="Nhập tin nhắn">
+                <button class="btn-send has-tap" aria-label="Gửi">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </button>
+            </div>
+        </footer>
+
+    </div>
+    <script src="../../static/js/dap_an_ai.js?v=2"></script>
+</body>
+</html>

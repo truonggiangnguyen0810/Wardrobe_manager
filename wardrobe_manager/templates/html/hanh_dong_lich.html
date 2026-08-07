@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hành động lịch</title>
+    <link rel="stylesheet" href="../../static/css/_tap.css">
+    <link rel="stylesheet" href="../../static/css/hanh_dong_lich.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Bottom Sheet (Modal Hành động lịch) -->
+        <div class="bottom-sheet">
+            <!-- Nút đóng -->
+            <button class="close-btn has-tap" aria-label="Đóng">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+
+            <!-- Tiêu đề -->
+            <h2 class="sheet-title">Bạn muốn thực hiện thao tác gì?</h2>
+
+            <!-- Các lựa chọn -->
+            <div class="options-grid">
+                <!-- Lựa chọn 1: Xem trang phục trong ngày -->
+                <button class="option-card has-tap">
+                    <div class="option-visual">
+                        <svg class="card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                    </div>
+                    <span class="option-text">Xem trang phục trong ngày</span>
+                </button>
+
+                <!-- Lựa chọn 2: Thêm trang phục -->
+                <button class="option-card has-tap">
+                    <div class="option-visual">
+                        <svg class="card-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                    </div>
+                    <span class="option-text">Thêm trang phục</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
