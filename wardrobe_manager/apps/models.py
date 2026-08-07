@@ -118,7 +118,7 @@ class MonDo(models.Model):
         from django.conf import settings
         if self.hinh_anh_trang_phuc:
             return f"{settings.MEDIA_URL}{self.nguoi_dung_id}/{self.hinh_anh_trang_phuc}"
-        return f"{settings.STATIC_URL}img/base-avatar.jpg"
+        return f"{settings.STATIC_URL}img/base-avatar.svg"
 
 
 class TrangPhuc(models.Model):

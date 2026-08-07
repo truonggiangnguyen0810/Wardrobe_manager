@@ -34,7 +34,6 @@ urlpatterns = [
     # LỊCH TRANG PHỤC
     path('lich-trang-phuc/', views.lich_trang_phuc, name='lich_trang_phuc'),
     path('api/them-lich-trang-phuc/', views.api_them_lich_trang_phuc, name='api_them_lich_trang_phuc'),
-    path('api/chi-tiet-lich/', views.api_chi_tiet_lich, name='api_chi_tiet_lich'),
 
     # NOTE: --- AI Endpoints ---
     path('api/quet-anh/', views.api_quet_anh, name='api_quet_anh'),

@@ -730,20 +730,29 @@ def quen_mk_mat_khau(request):
 #========= TRANG PHỤC =======#
 @login_required(login_url='login')
 def sach_trang_phuc(request):
-    from .models import Form
     trang_phuc_list = TrangPhuc.objects.filter(nguoi_dung=request.user)
 
     # Xử lý lọc
-    mua_filter = request.GET.getlist('mua')
-    form_dang_filter = request.GET.getlist('form_dang')
-    danh_gia_filter = request.GET.get('danh_gia', '0')
+    mua_filter = request.GET.get('mua')
+    phong_cach_filter = request.GET.get('phong_cach')
+    sao_filter = request.GET.get('sao')
+    form_dang_filter = request.GET.get('form_dang')
 
     if mua_filter:
-        trang_phuc_list = trang_phuc_list.filter(mua__in=mua_filter)
+        trang_phuc_list = trang_phuc_list.filter(mua__pk=mua_filter)
+    if phong_cach_filter:
+        trang_phuc_list = trang_phuc_list.filter(phong_cach__pk=phong_cach_filter)
     if form_dang_filter:
-        trang_phuc_list = trang_phuc_list.filter(chi_tiet_mon_do__mon_do__form_dang__in=form_dang_filter)
-    if danh_gia_filter.isdigit() and int(danh_gia_filter) > 0:
-        trang_phuc_list = trang_phuc_list.filter(danh_gia__gte=int(danh_gia_filter))
+        trang_phuc_list = trang_phuc_list.filter(chi_tiet_mon_do__mon_do__form_dang__pk=form_dang_filter)
+    if sao_filter:
+        try:
+            sao_val = int(sao_filter)
+            if sao_val >= 4:
+                trang_phuc_list = trang_phuc_list.filter(danh_gia=True)
+            else:
+                trang_phuc_list = trang_phuc_list.filter(danh_gia=False)
+        except ValueError:
+            pass
 
     trang_phuc_list = trang_phuc_list.order_by('-ma_trang_phuc').distinct()
 
@@ -756,10 +765,18 @@ def sach_trang_phuc(request):
     return render(request, 'html/sach_trang_phuc.html', {
         'trang_phuc_list': trang_phuc_list,
         'mua_list': mua_list,
+        'phongcach_list': phong_cach_list,
         'formdang_list': Form.objects.filter(user_filter),
-        'selected_mua': json.dumps(mua_filter),
-        'selected_form_dang': json.dumps(form_dang_filter),
-        'danh_gia_filter': danh_gia_filter,
+        'selected_mua': json.dumps([mua_filter] if mua_filter else []),
+        'selected_phong_cach': json.dumps([phong_cach_filter] if phong_cach_filter else []),
+        'selected_form_dang': json.dumps([form_dang_filter] if form_dang_filter else []),
+        'selected_sao': json.dumps([sao_filter] if sao_filter else []),
+        'hien_thi_sao': True,
+        'hien_thi_chat_lieu': False,
+        'hien_thi_phong_cach': True,
+        'hien_thi_mua': True,
+        'hien_thi_mau_sac': False,
+        'hien_thi_form_dang': False,
     })
 
 @login_required(login_url='login')
@@ -820,32 +837,25 @@ def chinh_sua_trang_phuc(request):
                     'phong_cach': [p.pk for p in tp.phong_cach.all()] if tp.phong_cach.exists() else []
                 })
         except Exception as e:
-            print("Lỗi tải chi tiết lịch trang phục:", str(e))
-            day_outfits_data = [{"error": str(e)}]
+            pass
+            
     mon_do_list = MonDo.objects.filter(nguoi_dung=request.user).order_by('-ma_mon_do')
     from django.db.models import Q
     user_filter = Q(nguoi_dung__isnull=True) | Q(nguoi_dung=request.user)
     danh_muc_list = DanhMucMonDo.objects.filter(user_filter)
     mua_list = Mua.objects.filter(user_filter)
     phong_cach_list = PhongCach.objects.filter(user_filter)
-    from .models import Form
-    formdang_list = Form.objects.filter(user_filter)
     
-    response = render(request, 'html/chinh_sua_trang_phuc.html', {
+    return render(request, 'html/chinh_sua_trang_phuc.html', {
         'mon_do_list': mon_do_list,
         'danh_muc_list': danh_muc_list,
         'mua_list': mua_list,
         'phong_cach_list': phong_cach_list,
-        'formdang_list': formdang_list,
         'trang_phuc_data': trang_phuc_data,
         'trang_phuc_id': trang_phuc_id,
-        'day_outfits_data': json.dumps(day_outfits_data),
+        'day_outfits_data': json.dumps(day_outfits_data) if day_outfits_data else 'null',
         'ngay_dang_xem_str': ngay_dang_xem_str,
     })
-    response['Cache-Control'] = 'no-cache, no-store, must-revalidate'
-    response['Pragma'] = 'no-cache'
-    response['Expires'] = '0'
-    return response
 # ==============================================================================
 # AI API ENDPOINTS
 # ==============================================================================
@@ -932,34 +942,9 @@ def api_luu_trang_phuc(request):
                         ma_mon_do=mon_do
                     )
 
-            # 3. Lưu Mùa, Phong cách và Form dáng (nếu có Khác)
+            # 3. Lưu Mùa và Phong cách
             mua_ids = data.get('mua', [])
             phong_cach_ids = data.get('phong_cach', [])
-            
-            # Xử lý Mùa Khác
-            mua_khac = data.get('mua_khac')
-            if mua_khac and 'khac' in mua_ids:
-                mua_ids.remove('khac')
-                mua_khac = mua_khac.strip()
-                if mua_khac:
-                    m_obj, created = Mua.objects.get_or_create(
-                        ten_mua__iexact=mua_khac,
-                        defaults={'ten_mua': mua_khac.capitalize(), 'nguoi_dung': request.user}
-                    )
-                    mua_ids.append(m_obj.pk)
-            
-            # Xử lý Form dáng Khác
-            form_dang_khac = data.get('form_dang_khac')
-            form_dang_ids = data.get('form_dang', [])
-            if form_dang_khac and 'khac' in form_dang_ids:
-                form_dang_khac = form_dang_khac.strip()
-                if form_dang_khac:
-                    from .models import Form
-                    f_obj, created = Form.objects.get_or_create(
-                        ten_form__iexact=form_dang_khac,
-                        defaults={'ten_form': form_dang_khac.capitalize(), 'nguoi_dung': request.user}
-                    )
-                    # TrangPhuc không có trường form_dang nên chỉ lưu vào bảng Form
             
             if mua_ids:
                 mua_objs = list(Mua.objects.filter(pk__in=mua_ids))
@@ -1152,40 +1137,6 @@ def lich_trang_phuc(request):
 
 @login_required(login_url='login')
 # @require_POST
-@login_required
-def api_chi_tiet_lich(request):
-    ngay_mac_str = request.GET.get('ngay')
-    if not ngay_mac_str:
-        return JsonResponse({'error': 'Missing date'}, status=400)
-    
-    from datetime import datetime
-    try:
-        ngay_obj = datetime.strptime(ngay_mac_str, '%Y-%m-%d').date()
-        lich_list = LichTrangPhuc.objects.filter(nguoi_dung=request.user, ngay_mac=ngay_obj)
-        
-        day_outfits_data = []
-        for lich in lich_list:
-            tp = lich.ma_trang_phuc
-            items = []
-            for ct in tp.chitiettrangphuc_set.all():
-                mon = ct.ma_mon_do
-                items.append({
-                    'id': mon.ma_mon_do,
-                    'image_url': mon.image_url
-                })
-            
-            day_outfits_data.append({
-                'id': tp.ma_trang_phuc,
-                'ten_trang_phuc': tp.ten_trang_phuc,
-                'rating': tp.danh_gia or 0,
-                'items': items
-            })
-            
-        return JsonResponse({'outfits': day_outfits_data})
-    except Exception as e:
-        return JsonResponse({'error': str(e)}, status=500)
-
-@login_required
 def api_them_lich_trang_phuc(request):
     """
     API thêm trang phục vào lịch
