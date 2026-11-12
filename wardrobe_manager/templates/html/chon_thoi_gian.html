@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Chọn thời gian</title>
+    <link rel="stylesheet" href="../../static/css/_tap.css">
+    <link rel="stylesheet" href="../../static/css/chon_thoi_gian.css">
+</head>
+<body>
+    <div class="app-container is-open" id="app">
+        <!-- Nền phía sau: hiển thị tháng/năm đang chọn -->
+        <div class="app-bg">
+            <h1 class="bg-title">Chọn thời gian</h1>
+            <button class="result-chip has-tap" id="openPicker">
+                <span id="resultText">tháng 7 năm 2026</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+            <p class="hint">Bấm ô trên để mở bộ chọn tháng &amp; năm</p>
+        </div>
+
+        <!-- Lớp phủ mờ -->
+        <div class="overlay" id="overlay"></div>
+
+        <!-- Bottom Sheet chọn thời gian -->
+        <div class="sheet" id="sheet">
+            <div class="sheet-handle"></div>
+            <h2 class="sheet-title">Chọn tháng &amp; năm</h2>
+
+            <div class="wheel-box">
+                <div class="wheel-highlight"></div>
+                <div class="wheel" id="wheelMonth"></div>
+                <div class="wheel" id="wheelYear"></div>
+            </div>
+
+            <div class="sheet-actions">
+                <button class="btn-outline has-tap" id="btnCancel">Hủy</button>
+                <button class="btn-solid has-tap" id="btnDone">Xác nhận</button>
+            </div>
+        </div>
+    </div>
+    <script src="../../static/js/chon_thoi_gian.js"></script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Lịch trang phục</title>
+    <link rel="stylesheet" href="../../static/css/_tap.css">
+    <link rel="stylesheet" href="../../static/css/lich_trang_phuc.css">
+    <link rel="stylesheet" href="../../static/css/chon_cach_them_trang_phuc.css?v=3">
+</head>
+<body>
+    <div class="app-container">
+
+        <!-- Header AI (giống tu_do) -->
+        <header class="ai-header">
+            <div class="header-actions">
+                <button class="icon-btn has-tap" aria-label="Lịch">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                </button>
+                <button class="icon-btn has-tap" aria-label="Thông báo">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                </button>
+                <div class="avatar-dropdown-wrap">
+                    {% if user.ho_so.anh_dai_dien %}
+                        <img src="/media/{{ user.ho_so.anh_dai_dien }}" alt="Avatar" class="avatar has-tap avatar-toggle" onerror="this.onerror=null;this.src='/static/img/base-avatar.jpg'">
+                    {% else %}
+                        <img src="{% static 'img/base-avatar.jpg' %}" alt="Avatar" class="avatar has-tap avatar-toggle">
+                    {% endif %}
+                    <div class="avatar-dropdown-menu">
+                        <a href="{% url 'quan_li_trang_ca_nhan' %}" class="avatar-dropdown-item">Quản lý thông tin cá nhân</a>
+                        <a href="{% url 'cap_nhat_mat_khau' %}" class="avatar-dropdown-item">Cập nhật mật khẩu</a>
+                    </div>
+                </div>
+            </div>
+            <p class="ai-message">Bạn thêm càng nhiều món đồ, tôi càng có nhiều gợi ý dành cho bạn!</p>
+        </header>
+
+        <!-- Nhãn tháng/năm (ngay dưới header) - bấm để mở bộ chọn -->
+        <div class="month-bar">
+            <button class="month-selector has-tap" id="monthBtn" aria-label="Chọn tháng">
+                <span class="month-label" id="lichThang">Tháng 7 – 2026</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </button>
+        </div>
+
+        <!-- Lịch -->
+        <main class="calendar-body scroll-area">
+            <!-- Hàng thứ -->
+            <div class="weekdays-grid">
+                <span>Thứ 2</span>
+                <span>Thứ 3</span>
+                <span>Thứ 4</span>
+                <span>Thứ 5</span>
+                <span>Thứ 6</span>
+                <span>Thứ 7</span>
+                <span>CN</span>
+            </div>
+
+            <!-- Lưới ngày (JS tự vẽ theo tháng/năm) -->
+            <div class="dates-grid"></div>
+        </main>
+
+        <!-- Popup chọn tháng & năm (bottom sheet + wheel) -->
+        <div class="tp-overlay" id="tpOverlay"></div>
+        <div class="tp-sheet" id="tpSheet">
+            <div class="tp-handle"></div>
+            <h2 class="tp-title">Chọn tháng &amp; năm</h2>
+            <div class="tp-wheel-box">
+                <div class="tp-highlight"></div>
+                <div class="tp-wheel" id="tpWheelMonth"></div>
+                <div class="tp-wheel" id="tpWheelYear"></div>
+            </div>
+            <div class="tp-actions">
+                <button class="btn btn-outline has-tap" id="tpCancel">Hủy</button>
+                <button class="btn btn-solid has-tap" id="tpConfirm">Xác nhận</button>
+            </div>
+        </div>
+
+        <!-- Popup chọn hành động -->
+        <div class="tp-sheet" id="actionSheet">
+            <div class="tp-handle"></div>
+            <h2 class="tp-title">Chọn thao tác</h2>
+            <div class="tp-actions" style="display: flex; flex-direction: row; gap: 12px; margin-top: 16px;">
+                <button class="btn btn-outline has-tap" id="btnChiTiet">Chi tiết lịch trang phục</button>
+                <button class="btn btn-solid has-tap" id="btnThem">Thêm lịch trang phục</button>
+            </div>
+        </div>
+        
+        <!-- Sheet Overlay for Outfit -->
+        <div class="sheet-overlay" id="outfitSheetOverlay" hidden></div>
+
+        <!-- Bottom Sheet (Modal Tạo trang phục) -->
+        <div class="bottom-sheet" id="outfitActionSheet" hidden>
+            <button class="close-btn has-tap" id="closeOutfitSheet" aria-label="Đóng">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+            <h2 class="sheet-title">Bạn muốn tạo trang phục như thế nào?</h2>
+            <div class="options-grid">
+                <!-- Sắp xếp tự do (Chỉnh sửa trang phục) -->
+                <button class="option-card has-tap" id="btnThemTuDo">
+                    <div class="option-visual">
+                        <img src="https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=120&q=80" alt="Áo" class="cloth-item shirt">
+                        <img src="https://images.unsplash.com/photo-1542272604-787c3835535d?w=120&q=80" alt="Quần" class="cloth-item pants">
+                    </div>
+                    <span class="option-text">Sắp xếp tự do</span>
+                </button>
+
+                <!-- Chọn từ sách trang phục -->
+                <button class="option-card has-tap" id="btnChonTuSach">
+                    <div class="option-visual">
+                        <svg class="sparkle-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2L14.2 9.8L22 12L14.2 14.2L12 22L9.8 14.2L2 12L9.8 9.8L12 2Z" fill="#4a4242"/>
+                            <path d="M19.5 3.5L20.325 6.175L23 7L20.325 7.825L19.5 10.5L18.675 7.825L16 7L18.675 6.175L19.5 3.5Z" fill="#4a4242"/>
+                            <path d="M18.5 15.5L19.118 17.382L21 18L19.118 18.618L18.5 20.5L17.882 18.618L16 18L17.882 17.382L18.5 15.5Z" fill="#4a4242"/>
+                        </svg>
+                    </div>
+                    <span class="option-text">Chọn từ sách trang phục</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- Success Popup -->
+    <div id="successPopup" onclick="this.style.display='none'" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 10000; align-items: center; justify-content: center; animation: fadeIn 0.3s ease-out;">
+        <div style="background: white; padding: 32px 24px; border-radius: 20px; text-align: center; max-width: 320px; width: 85%; transform: scale(0.9); animation: zoomIn 0.3s ease-out forwards; box-shadow: 0 10px 25px rgba(0,0,0,0.1);" onclick="event.stopPropagation()">
+            <div style="width: 72px; height: 72px; background-color: #13629b; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+            </div>
+            <h3 style="margin: 0 0 12px; font-size: 20px; font-weight: 700; color: #111; line-height: 1.3;">Thành công!</h3>
+            <p style="margin: 0; font-size: 14px; color: #888; line-height: 1.5;"></p>
+        </div>
+    </div>
+    <style>
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes zoomIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    </style>
+    
+    <script>
+        window.LICH_COUNTS = {{ lich_counts_json|safe|default:"{}" }};
+    </script>
+    <script src="../../static/js/lich_trang_phuc.js?v=10"></script>
+</body>
+</html>

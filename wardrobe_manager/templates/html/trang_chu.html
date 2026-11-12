@@ -1,0 +1,235 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang chủ</title>
+    <link rel="stylesheet" href="{% static 'css/_tap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/trang_chu.css' %}?v=3">
+    <link rel="stylesheet" href="{% static 'css/chon_cach_them_trang_phuc.css' %}?v=4">
+    <style>
+        /* Popup chúc mừng đăng ký (hiện giữa trang, nền mờ, tự mất sau 3s) */
+        .success-overlay {
+            position: fixed; inset: 0; z-index: 1000;
+            background-color: rgba(0,0,0,0.45);
+            -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px);
+            display: flex; align-items: center; justify-content: center; padding: 24px;
+            opacity: 1; transition: opacity .3s ease;
+        }
+        .success-overlay.hidden { opacity: 0; pointer-events: none; }
+        .success-card {
+            background-color: var(--trang); border-radius: 20px;
+            padding: 32px 28px; text-align: center; max-width: 300px; width: 100%;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+            display: flex; flex-direction: column; align-items: center; gap: 12px;
+        }
+        .success-icon {
+            width: 72px; height: 72px; border-radius: 50%;
+            background-color: var(--xanhnhat); color: var(--trang);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .success-icon svg { width: 40px; height: 40px; }
+        .success-title { font-size: 18px; font-weight: 800; color: var(--den); }
+        .success-sub { font-size: 13px; color: var(--textphu); }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        
+        <!-- Nội dung có thể cuộn -->
+        <main class="scrollable-content scroll-area">
+            
+            <!-- Header -->
+            <header class="top-bar">
+                <h1 class="greeting">Xin chào, {{ user.ho_so.ho_ten|default:user.username }}</h1>
+                <div class="top-actions">
+                    <a href="{% url 'lich_trang_phuc' %}" class="icon-btn has-tap" aria-label="Lịch" style="color: inherit; display: flex; align-items: center; justify-content: center;">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                    </a>
+                    <button class="icon-btn has-tap" aria-label="Thông báo">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
+                        </svg>
+                    </button>
+                    <div class="avatar-dropdown-wrap">
+                        {% if user.ho_so.anh_dai_dien %}
+                            <img src="/media/{{ user.ho_so.anh_dai_dien }}" alt="Avatar" class="user-avatar has-tap avatar-toggle" onerror="this.onerror=null;this.src='/static/img/base-avatar.jpg'">
+                        {% else %}
+                            <img src="{% static 'img/base-avatar.jpg' %}" alt="Avatar" class="user-avatar has-tap avatar-toggle">
+                        {% endif %}
+                        <div class="avatar-dropdown-menu">
+                            <a href="{% url 'quan_li_trang_ca_nhan' %}" class="avatar-dropdown-item">Quản lý thông tin cá nhân</a>
+                            <a href="{% url 'cap_nhat_mat_khau' %}" class="avatar-dropdown-item">Cập nhật mật khẩu</a>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Tính năng phổ biến -->
+            <section class="section">
+                <div class="features-grid">
+                    <div class="grid-row-2-cols">
+                        <a class="feature-card card-large has-tap" id="openOutfitCreateSheet" style="cursor: pointer;">
+                            <svg class="feature-icon-center" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
+                            </svg>
+                            <span class="feature-title">Tạo trang phục</span>
+                        </a>
+                        <a class="feature-card card-large has-tap" href="{% url 'dang_phat_trien' %}?ten=Tìm mảnh ghép còn thiếu" style="text-decoration:none;color:inherit">
+                            <svg class="feature-icon-center" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                            <span class="feature-title">Tìm mảnh ghép<br>còn thiếu</span>
+                        </a>
+                    </div>
+                    <div class="grid-row-3-cols">
+                        <a href="{% url 'lich_trang_phuc' %}" class="feature-card card-small text-center flex-center-col has-tap" style="text-decoration:none;color:inherit">
+                            <svg class="feature-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                            <span class="feature-title">Lịch</span>
+                        </a>
+                        <a class="feature-card card-small text-center flex-center-col has-tap" href="{% url 'dang_phat_trien' %}?ten=Thử đồ ảo" style="text-decoration:none;color:inherit">
+                            <svg class="feature-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9L2.8 16.9a1.5 1.5 0 0 0 1 2.6h16.4a1.5 1.5 0 0 0 1-2.6L12 9zm0 0V4.5a2.5 2.5 0 0 0-5 0"></path>
+                            </svg>
+                            <span class="feature-title">Thử đồ ảo</span>
+                        </a>
+                        <a class="feature-card card-small text-center flex-center-col has-tap" href="{% url 'dang_phat_trien' %}?ten=Thống kê phong cách" style="text-decoration:none;color:inherit">
+                            <svg class="feature-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                            </svg>
+                            <span class="feature-title">Thống kê<br>phong cách</span>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Các món đồ đã thêm gần đây -->
+            <section class="section">
+                <div class="section-header">
+                    <h2 class="section-title">Các món đồ đã thêm gần đây</h2>
+                </div>
+                
+<div class="recent-items-scroll">
+                      <button type="button" class="btn-add-item has-tap" id="openAddItemSheet">
+                          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4v16m8-8H4"></path>
+                          </svg>
+                      </button>
+                     <!-- NOTE: món đồ gần đây của user đang đăng nhập (đổ từ DB) -->
+                     {% for mon in mon_do_gan_day %}
+                         <img src="{{ mon.image_url }}" alt="{{ mon.ten_mon_do }}" class="clothing-item">
+                     {% endfor %}
+                 </div>
+            </section>
+
+
+        </main>
+
+        <!-- Bottom Navigation -->
+        <nav class="bottom-nav">
+            <button type="button" class="nav-item active has-tap is-active" aria-current="page">
+                <svg fill="currentColor" viewBox="0 0 20 20"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
+                <span>Trang chủ</span>
+            </button>
+            <a class="nav-item has-tap" href="{% url 'tu_do' %}">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+                <span>Tủ đồ</span>
+            </a>
+            
+            <div class="nav-fab">
+                <button type="button" class="fab-btn has-tap" id="openFabSheet" aria-label="Thêm mới">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                </button>
+            </div>
+
+            <a type="button" class="nav-item has-tap" href="{% url 'sach_trang_phuc' %}" >
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                <span>Trang phục</span>
+            </a>
+
+            <a class="nav-item has-tap" href="{% url 'dang_phat_trien' %}">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <span>Khám phá</span>
+            </a>
+        </nav>
+    </div>
+
+    {% if show_popup %}
+    <!-- NOTE: popup thành công (chỉ hiện 1 lần): sau đăng ký HOẶC sau khi đặt lại mật khẩu. -->
+    <div class="success-overlay" id="successOverlay">
+        <div class="success-card">
+            <div class="success-icon" aria-hidden="true">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+            </div>
+            <h2 class="success-title">{{ popup_title }}</h2>
+            <p class="success-sub">{{ popup_sub }}</p>
+        </div>
+    </div>
+    <script>
+        (function () {
+            var ov = document.getElementById('successOverlay');
+            function hide() { if (ov) ov.classList.add('hidden'); }
+            setTimeout(hide, 3000);              // tự mất sau 3 giây
+            ov.addEventListener('click', hide);  // bấm vào nền mờ cũng tắt
+        })();
+    </script>
+    {% endif %}
+    <script src="{% static 'js/trang_chu.js' %}?v=3"></script>
+
+    <!-- Sheet Overlay for Outfit -->
+    <div class="sheet-overlay" id="outfitSheetOverlay" hidden></div>
+
+    <!-- Bottom Sheet (Modal Tạo trang phục) -->
+    <div class="bottom-sheet" id="outfitActionSheet" hidden>
+        <!-- Nút đóng -->
+        <button class="close-btn has-tap" id="closeOutfitSheet" aria-label="Đóng">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
+
+        <!-- Tiêu đề -->
+        <h2 class="sheet-title">Bạn muốn tạo trang phục như thế nào?</h2>
+
+        <!-- Các lựa chọn -->
+        <div class="options-grid">
+            <!-- Lựa chọn 1: Sắp xếp tự do -->
+            <a class="option-card has-tap" style="text-decoration: none" href="{% url 'chinh_sua_trang_phuc' %}" onclick="window.location.href='{% url 'chinh_sua_trang_phuc' %}'; return false;">
+                <div class="option-visual">
+                    <img src="https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=120&q=80" alt="Áo" class="cloth-item shirt">
+                    <img src="https://images.unsplash.com/photo-1542272604-787c3835535d?w=120&q=80" alt="Quần" class="cloth-item pants">
+                </div>
+                <span class="option-text">Sắp xếp tự do</span>
+            </a>
+
+            <!-- Lựa chọn 2: Gợi ý trang phục -->
+            <button class="option-card has-tap disabled" disabled>
+                <div class="option-visual">
+                    <svg class="sparkle-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2L14.2 9.8L22 12L14.2 14.2L12 22L9.8 14.2L2 12L9.8 9.8L12 2Z" fill="#4a4242"/>
+                        <path d="M19.5 3.5L20.325 6.175L23 7L20.325 7.825L19.5 10.5L18.675 7.825L16 7L18.675 6.175L19.5 3.5Z" fill="#4a4242"/>
+                        <path d="M18.5 15.5L19.118 17.382L21 18L19.118 18.618L18.5 20.5L17.882 18.618L16 18L17.882 17.382L18.5 15.5Z" fill="#4a4242"/>
+                    </svg>
+                </div>
+                <span class="option-text">Gợi ý trang phục</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Bottom-sheet chọn nguồn ảnh (mobile-first) -->
+    <div class="sheet-overlay" id="sheetOverlay" hidden></div>
+    <div class="action-sheet" id="actionSheet" hidden>
+        <button class="sheet-item has-tap" type="button" id="optCamera">📷 Chụp ảnh</button>
+        <button class="sheet-item has-tap" type="button" id="optLibrary">🖼️ Chọn từ thư viện</button>
+        <button class="sheet-cancel has-tap" type="button" id="optCancel">Hủy</button>
+    </div>
+    <!-- Hidden file inputs cho Thư viện -->
+    <input type="file" id="fileInputLibrary" accept="image/*" style="display: none;">
+</body>
+</html>

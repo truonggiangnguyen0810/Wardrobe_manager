@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tạo trang phục</title>
+    <link rel="stylesheet" href="../../static/css/_tap.css">
+    <link rel="stylesheet" href="../../static/css/tao_trang_phuc.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Bottom Sheet (Modal Tạo trang phục) -->
+        <div class="bottom-sheet">
+            <!-- Nút đóng -->
+            <button class="close-btn has-tap" aria-label="Đóng">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+
+            <!-- Tiêu đề -->
+            <h2 class="sheet-title">Bạn muốn tạo trang phục như thế nào?</h2>
+
+            <!-- Các lựa chọn -->
+            <div class="options-grid">
+                <!-- Lựa chọn 1: Sắp xếp tự do -->
+                <a class="option-card has-tap" style="text-decoration: none" href="{% url 'chinh_sua_trang_phuc' %}" onclick="window.location.href='{% url 'chinh_sua_trang_phuc' %}'; return false;">
+                    <div class="option-visual">
+                        <!-- Sử dụng ảnh placeholder minh họa cho quần áo được xoay nhẹ -->
+                        <img src="https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=120&q=80" alt="Áo" class="cloth-item shirt">
+                        <img src="https://images.unsplash.com/photo-1542272604-787c3835535d?w=120&q=80" alt="Quần" class="cloth-item pants">
+                    </div>
+                    <span class="option-text">Sắp xếp tự do</span>
+                </a>
+
+                <!-- Lựa chọn 2: Gợi ý trang phục -->
+                <button class="option-card has-tap disabled" disabled>
+                    <div class="option-visual">
+                        <svg class="sparkle-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2L14.2 9.8L22 12L14.2 14.2L12 22L9.8 14.2L2 12L9.8 9.8L12 2Z" fill="#4a4242"/>
+                            <path d="M19.5 3.5L20.325 6.175L23 7L20.325 7.825L19.5 10.5L18.675 7.825L16 7L18.675 6.175L19.5 3.5Z" fill="#4a4242"/>
+                            <path d="M18.5 15.5L19.118 17.382L21 18L19.118 18.618L18.5 20.5L17.882 18.618L16 18L17.882 17.382L18.5 15.5Z" fill="#4a4242"/>
+                        </svg>
+                    </div>
+                    <span class="option-text">Gợi ý trang phục</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

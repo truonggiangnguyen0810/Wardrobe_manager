@@ -1,0 +1,94 @@
+{
+ "format_version": 1,
+ "files": {
+  ".gitattributes": {
+   "size": 1477,
+   "blob_id": "c7d9f3332a950355d5a77d85000f05e6f45435ea"
+  },
+  ".gitignore": {
+   "size": 29,
+   "blob_id": "d0e300c55f010e9077e7befa1bb4df35ccf0a818"
+  },
+  "README.md": {
+   "size": 4391,
+   "blob_id": "c744122aa160061440cc7ee3380c0cae1012747c"
+  },
+  "config.json": {
+   "size": 1727,
+   "blob_id": "7bf506a3672235c681b35e124ef9333ca6f5e8b2"
+  },
+  "handler.py": {
+   "size": 1542,
+   "blob_id": "677fdf4567de92cdd30b8957c5b8d7c0563bcdfe"
+  },
+  "mattmdjaga_segformer_b2_clothes.json": {
+   "size": 4912,
+   "blob_id": "0b574956d4dbb16142a6309fa81d8c8071511b35"
+  },
+  "model.safetensors": {
+   "size": 109493236,
+   "blob_id": "9313aacc3c6e9d4e23b754ecee24f4397d13cfb0",
+   "lfs_sha256": "8f86fd90c567afd4370b3cc3a7e81ed767a632b2832a738331af660acc0c4c68",
+   "lfs_size": 109493236,
+   "xet_hash": "71f15bf18df099b1ca689a2b9a3772ed0dd8785ff3628228be5c6b129263d7d7"
+  },
+  "onnx/config.json": {
+   "size": 1717,
+   "blob_id": "db6261b5b36fac4aea5274b43f0e8d2d5a2bfdc2"
+  },
+  "onnx/model.onnx": {
+   "size": 110039290,
+   "blob_id": "fd685ae8a7ef9da57e1da399c06d8c7b7c925cc3",
+   "lfs_sha256": "a93a8dac171b5c1fcc53632a8bfc180bfd9759ea69a3e207451bb07f76add54f",
+   "lfs_size": 110039290,
+   "xet_hash": "f25d951b11c2b10f84e7edca1d00db77a9843233916e22a859149391c757806c"
+  },
+  "onnx/preprocessor_config.json": {
+   "size": 431,
+   "blob_id": "9063ab0ff9e34e2ad7d3e6622f3755ff3c650367"
+  },
+  "optimizer.pt": {
+   "size": 219104837,
+   "blob_id": "924b784b7a4051188aac1caac738415b2e602b58",
+   "lfs_sha256": "4f642f5c29cb7c9ac0ff242ccf94220c88913f4a65db4727b2530a987ce14d9a",
+   "lfs_size": 219104837,
+   "xet_hash": "03e6f83072bcdf785cbeb6f301ca9911b034442810a15669470df5068c5b35dd"
+  },
+  "preprocessor_config.json": {
+   "size": 271,
+   "blob_id": "d230721d08201d422c6e3d11994083b55e7e66ca"
+  },
+  "pytorch_model.bin": {
+   "size": 109579005,
+   "blob_id": "3b799f7a56b1851657bdd3990740f6c374bef283",
+   "lfs_sha256": "934543143c97acf3197b030bb0ba046f6c713757467a7dcf47f27ce8c0d6264d",
+   "lfs_size": 109579005,
+   "xet_hash": "d77d97f39692fa669bcc9cc58c98bcb97165a5a6ff50d604664aca2dedd472a6"
+  },
+  "rng_state.pth": {
+   "size": 14575,
+   "blob_id": "c958a22f2b13e60ae38c7444aa0af1ba79406a37",
+   "lfs_sha256": "a7c38376dfee2c075efd2b37186139541f47970794c545ba17f510796313aaa8",
+   "lfs_size": 14575,
+   "xet_hash": "30f47b785786747bf4ea11973c2761f404f52ec7f18f137ee6beae7850e3d154"
+  },
+  "scheduler.pt": {
+   "size": 627,
+   "blob_id": "c4d6b1344f61853d19202ef8956512f6c215b635",
+   "lfs_sha256": "7a9a297dec0fe2336eab64ac3bbd47e4936655c43239740a40cfe5f4623a0657",
+   "lfs_size": 627,
+   "xet_hash": "be52e073b9472bb88048fdbdcab1e51b2211b3954304b8a815fca77e3d811956"
+  },
+  "trainer_state.json": {
+   "size": 291299,
+   "blob_id": "205f1598461cab0a4a5845aa80a06ada96501f15"
+  },
+  "training_args.bin": {
+   "size": 3323,
+   "blob_id": "15e36311880aac16148c8af049028f0b27e16a95",
+   "lfs_sha256": "210f58c34439201a03f7a2e923b10e2a9b03a8943740f452ae4e8f57ebcfc186",
+   "lfs_size": 3323,
+   "xet_hash": "40842809f8ffa1dba0c561f3253dddbd8167ac1e82b16007e39b959bd73e3f91"
+  }
+ }
+}

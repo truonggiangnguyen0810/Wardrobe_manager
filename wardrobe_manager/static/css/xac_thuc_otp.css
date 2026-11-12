@@ -1,0 +1,111 @@
+/* RESET & BIẾN MÀU CƠ BẢN */
+:root {
+    --bg-main: var(--maunen);
+    --text-main: var(--textchinh);
+    --text-sub: #6b6b6b;
+    --bg-otp: var(--xamnhat);
+    --btn-bg: var(--den);
+}
+
+/* VÙNG NỘI DUNG CHÍNH */
+.content-wrapper {
+    flex: 1;
+    padding: 100px 20px 20px; /* Padding top lớn đẩy nội dung xuống giống thiết kế */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* TIÊU ĐỀ & PHỤ ĐỀ */
+.header-text {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 12px;
+}
+
+.subtitle {
+    font-size: 14px;
+    color: var(--text-sub);
+    line-height: 1.5;
+}
+
+.phone-number {
+    display: block;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-top: 4px;
+}
+
+/* NHÓM Ô NHẬP OTP */
+.otp-group {
+    display: flex;
+    justify-content: center;
+    gap: 10px; /* Khoảng cách giữa các ô */
+    margin-bottom: 32px;
+    width: 100%;
+}
+
+.otp-box {
+    width: 48px;
+    height: 56px;
+    border-radius: 10px;
+    background-color: var(--bg-otp);
+    border: 2px solid transparent;
+    font-size: 24px;
+    font-weight: 600;
+    text-align: center;
+    color: var(--text-main);
+    outline: none;
+    caret-color: var(--xanhnhat);
+    cursor: text;
+    transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+/* Ô đang focus: nền trắng + viền xanh (giống OTP thực tế) */
+.otp-box:focus {
+    border-color: var(--xanhnhat);
+    background-color: var(--trang);
+}
+
+/* VĂN BẢN GỬI LẠI MÃ */
+.resend-container {
+    text-align: center;
+}
+
+.resend-text {
+    font-size: 13px;
+    color: var(--text-sub);
+}
+
+.countdown {
+    font-weight: 600;
+}
+
+/* VÙNG NÚT BẤM DƯỚI CÙNG */
+.bottom-action {
+    padding: 20px 20px 40px; /* Padding bottom lớn giả lập khoảng trống Safe Area */
+    width: 100%;
+    background-color: var(--bg-main); /* Che phủ nội dung cuộn bên dưới nếu có */
+}
+
+.btn-confirm {
+    width: 100%;
+    height: 56px;
+    border-radius: 100px; /* Bo góc hoàn toàn thành dạng hạt đậu (pill) */
+    background-color: var(--btn-bg);
+    color: var(--trang);
+    border: none;
+    font-size: 17px;
+    font-weight: 600;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}

@@ -1,0 +1,92 @@
+/* RESET & BIẾN MÀU */
+:root {
+    --bg-app: var(--xamnhat); /* Nền của app phía sau */
+    --bg-sheet: var(--trang);
+    --bg-card: var(--xamnhat); /* Màu xám nhạt của thẻ lựa chọn */
+    --text-main: var(--textchinh);
+    --border-card: var(--xamnhat);
+}
+
+/* === BOTTOM SHEET (MODAL) === */
+.bottom-sheet {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--bg-sheet);
+    border-top-left-radius: 24px;
+    border-top-right-radius: 24px;
+    padding: 24px;
+    padding-bottom: 40px; /* Padding dưới cho safe area */
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+}
+
+/* Nút Đóng (Close) */
+.close-btn {
+    align-self: flex-end;
+    background: none;
+    border: none;
+    padding: 4px;
+    cursor: pointer;
+    margin-bottom: 12px;
+}
+
+/* Tiêu đề Modal */
+.sheet-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-main);
+    text-align: center;
+    margin-bottom: 24px;
+    line-height: 1.4;
+    padding: 0 10px;
+}
+
+/* Lưới Lựa chọn (Grid Options) */
+.options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+/* Thẻ Lựa chọn (Card) */
+.option-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-card);
+    border-radius: 20px;
+    padding: 20px 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1 / 1.1; /* Tỉ lệ khung hình thẻ hơi cao hơn vuông */
+    cursor: pointer;
+}
+
+.option-visual {
+    flex: 0 0 60%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+/* Icon trong thẻ */
+.card-icon {
+    width: 60px;
+    height: 60px;
+    color: var(--textchinh);
+}
+
+/* Text trong thẻ */
+.option-text {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-main);
+    margin-top: 12px;
+    text-align: center;
+}

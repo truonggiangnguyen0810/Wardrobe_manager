@@ -1,0 +1,91 @@
+/* RESET & BIẾN CƠ BẢN */
+:root {
+    --text-label: var(--textphu);
+    --text-value: var(--textchinh);
+    --border-color: var(--xamnhat);
+}
+
+/* HEADER */
+.header {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    flex-shrink: 0;
+    background-color: var(--maunen);
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* căn giữa tiêu đề (đã bỏ nút back) */
+    height: 60px;
+    box-shadow: 0 1px 0 var(--xamdam); /* viền dưới giống chinh_sua_trang_phuc */
+}
+.header-title { font-size: 18px; font-weight: 700; color: var(--text-value); }
+
+/* MAIN CONTENT - tự cuộn, chừa chỗ cho bottom cố định (giống trang_chu) */
+.content {
+    flex: 1;
+    overflow-y: auto;
+    padding-bottom: 110px; /* chừa chỗ cho footer cố định phía dưới */
+    scrollbar-width: none; /* ẩn scrollbar Firefox */
+}
+.content::-webkit-scrollbar {
+    display: none; /* ẩn scrollbar Chrome/Safari */
+}
+
+/* PRODUCT IMAGE */
+.product-image { display: flex; justify-content: center; padding: 20px; }
+.product-image img { width: 220px; height: auto; border-radius: 16px; object-fit: contain; padding: 4px; box-sizing: border-box; background: var(--xamnhat, #f0f0f0); }
+
+/* FORM LIST */
+.form-list { padding: 0 20px; display: flex; flex-direction: column; }
+.form-item {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 20px 0; border-bottom: 1px solid var(--border-color);
+}
+.label { color: var(--text-label); font-size: 16px; }
+.value { color: var(--text-value); font-size: 16px; font-weight: 500; display: flex; align-items: center; gap: 6px; }
+.dropdown { color: var(--text-value); }
+
+/* Chấm tròn màu */
+.color-dot {
+    display: inline-block;
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: #3b82f6;
+    border: 1px solid var(--xamnhat);
+}
+
+/* FOOTER - ghim cố định đáy (giống bottom-nav trang_chu) */
+.footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 90px;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background-color: var(--maunen);
+    border-top: 1px solid var(--xamdam); /* viền trên giống chinh_sua_trang_phuc */
+    z-index: 10;
+}
+.btn-secondary, .btn-primary {
+    flex: 1;
+    padding: 16px 0;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 16px;
+    font-family: inherit;
+}
+.btn-secondary {
+    background: var(--trang);
+    border: 1px solid var(--textchinh); /* viền đậm giống btn-outline */
+    color: var(--text-value);
+}
+.btn-primary {
+    background: var(--textchinh);
+    color: var(--trang);
+    border: none;
+}

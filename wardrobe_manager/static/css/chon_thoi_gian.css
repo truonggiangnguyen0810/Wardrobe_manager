@@ -1,0 +1,160 @@
+/* ============================================
+   CHỌN THỜI GIAN - WHEEL PICKER (THÁNG & NĂM)
+   ============================================ */
+
+:root {
+    --wheel-item-h: 40px; /* chiều cao 1 dòng wheel */
+}
+
+/* ---------- NỀN PHÍA SAU ---------- */
+.app-bg {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding: 24px;
+    text-align: center;
+}
+.bg-title { font-size: 20px; font-weight: 700; color: var(--textchinh); }
+.hint { font-size: 13px; color: var(--textphu); }
+
+/* Ô hiển thị kết quả (cũng là nút mở picker) */
+.result-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: var(--trang);
+    border: 1px solid var(--xamnhat);
+    border-radius: 100px;
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--textchinh);
+    cursor: pointer;
+    font-family: inherit;
+}
+
+/* ---------- LỚP PHỦ MỜ ---------- */
+.overlay {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.25s ease;
+    z-index: 10;
+}
+
+/* ---------- BOTTOM SHEET ---------- */
+.sheet {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--trang);
+    border-top-left-radius: 24px;
+    border-top-right-radius: 24px;
+    padding: 12px 20px 32px;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+    z-index: 11;
+}
+.sheet-handle {
+    width: 40px;
+    height: 4px;
+    border-radius: 2px;
+    background-color: var(--xamnhat);
+    margin: 0 auto 16px;
+}
+.sheet-title {
+    text-align: center;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--textchinh);
+    margin-bottom: 16px;
+}
+
+/* Trạng thái mở sheet */
+.app-container.is-open .overlay { opacity: 1; visibility: visible; }
+.app-container.is-open .sheet { transform: translateY(0); }
+
+/* ---------- HỘP 2 WHEEL ---------- */
+.wheel-box {
+    position: relative;
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+}
+
+/* Dải sáng ở giữa (chỉ dòng đang chọn) */
+.wheel-highlight {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: var(--wheel-item-h);
+    transform: translateY(-50%);
+    background-color: var(--xamnhat);
+    border-radius: 10px;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* ---------- CỘT WHEEL ---------- */
+.wheel {
+    flex: 1;
+    height: 200px;              /* 5 dòng x 40px */
+    overflow-y: auto;
+    scroll-snap-type: y mandatory;   /* bám dòng khi cuộn */
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    position: relative;
+    z-index: 1;
+    /* Mờ dần 2 đầu cho cảm giác trục lăn */
+    -webkit-mask: linear-gradient(transparent, #000 35%, #000 65%, transparent);
+    mask: linear-gradient(transparent, #000 35%, #000 65%, transparent);
+}
+.wheel::-webkit-scrollbar { display: none; }
+
+.wheel-item {
+    height: var(--wheel-item-h);
+    scroll-snap-align: center;       /* mỗi dòng bám vào giữa */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--textchinh);
+}
+.wheel-pad { height: 80px; }     /* = 2 dòng -> mục đầu/cuối snap vào giữa được */
+
+/* ---------- NÚT HÀNH ĐỘNG ---------- */
+.sheet-actions {
+    display: flex;
+    gap: 16px;
+}
+.sheet-actions button {
+    flex: 1;
+    height: 52px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.btn-outline {
+    background-color: var(--trang);
+    color: var(--textchinh);
+    border: 1px solid var(--textchinh);
+}
+.btn-solid {
+    background-color: var(--textchinh);
+    color: var(--trang);
+    border: none;
+}

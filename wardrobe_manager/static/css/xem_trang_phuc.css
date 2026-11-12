@@ -1,0 +1,218 @@
+/* --- Variables & Reset --- */
+:root {
+    --bg-app: var(--trang);
+    --text-main: var(--textchinh);
+    --text-muted: var(--textphu);
+    --border-color: var(--xamnhat);
+    --border-dashed: var(--textphu);
+    --btn-solid-bg: var(--textchinh);
+    --btn-solid-text: var(--trang);
+    --font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* --- Header --- */
+.app-header {
+    position: relative;
+    z-index: 10;
+    transform: translateZ(0);
+    background-color: var(--bg-app);
+    padding: 0 20px;
+    height: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-shadow: 0 1px 0 var(--xamdam);
+}
+
+.nav-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.screen-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+/* Nút mũi tên trái/phải ở hai bên tiêu đề */
+.nav-arrow {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-main);
+    font-family: inherit;
+}
+.nav-arrow svg {
+    width: 24px;
+    height: 24px;
+}
+
+/* --- Main Content --- */
+.main-content {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    padding: 16px 24px;
+    overflow-y: auto;
+}
+
+/* --- Clothing Grid --- */
+.clothing-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 32px;
+}
+
+.clothing-item {
+    aspect-ratio: 4 / 5;
+    border: 1px dashed var(--border-dashed);
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background-color: var(--bg-app);
+}
+
+.clothing-item img {
+    width: 80%;
+    height: 80%;
+    object-fit: contain;
+}
+
+.add-new-item {
+    background: none;
+    cursor: pointer;
+}
+
+/* --- Details Section --- */
+.details-section {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.clickable-row {
+    background: none;
+    border: none;
+    font-family: inherit;
+    font-size: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.detail-label {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text-main);
+    flex-shrink: 0;
+}
+
+.detail-input {
+    border: none;
+    text-align: right;
+    font-size: 15px;
+    color: var(--text-main);
+    font-family: inherit;
+    outline: none;
+    width: 100%;
+    margin-left: 16px;
+    background: transparent;
+}
+
+.detail-input::placeholder {
+    color: var(--text-muted);
+}
+
+.detail-value-group {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.detail-value {
+    color: var(--text-muted);
+    font-size: 15px;
+}
+
+.rating-stars {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.rating-count {
+    min-width: 24px;
+    height: 24px;
+    padding: 0 6px;
+    border-radius: 6px;
+    background-color: var(--xamnhat);
+    color: var(--textchinh);
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.rating-stars .star {
+    fill: #E2E8F0;
+    cursor: pointer;
+    transition: fill 0.15s ease;
+}
+.rating-stars .star.active {
+    fill: #FFC107;
+}
+
+/* --- Footer Actions --- */
+.action-footer {
+    height: 90px;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background-color: var(--bg-app);
+    border-top: 1px solid var(--xamdam);
+}
+
+.action-footer button {
+    flex: 1;
+    height: 52px;
+    padding: 0 12px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1.2;
+}
+
+.btn-outline {
+    background-color: var(--bg-app);
+    color: var(--text-main);
+    border: 1px solid var(--text-main);
+}
+
+.btn-solid {
+    background-color: var(--btn-solid-bg);
+    color: var(--btn-solid-text);
+    border: none;
+}

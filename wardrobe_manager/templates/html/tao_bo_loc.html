@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bộ lọc</title>
+    <link rel="stylesheet" href="../../static/css/_tap.css">
+    <link rel="stylesheet" href="../../static/css/tao_bo_loc.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="nav-bar">
+                <div class="nav-spacer"></div> <!-- Để cân bằng với nút đóng -->
+                <h1 class="screen-title">Bộ lọc</h1>
+                <button class="btn-icon btn-close has-tap" aria-label="Đóng">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Filter Content -->
+        <main class="filter-content scroll-area">
+            <!-- Filter Group: Mùa -->
+            <section class="filter-group">
+                <button class="group-header has-tap">
+                    <span class="group-title">Mùa</span>
+                    <svg class="icon-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
+                </button>
+                <div class="group-body">
+                    <button class="filter-tag has-tap">Mùa xuân</button>
+                    <button class="filter-tag has-tap">Mùa hè</button>
+                    <button class="filter-tag has-tap">Mùa thu</button>
+                    <button class="filter-tag has-tap">Mùa đông</button>
+                </div>
+            </section>
+
+            <hr class="divider">
+
+            <!-- Filter Group: Màu sắc (Collapsed state simulation) -->
+            <section class="filter-group">
+                <button class="group-header has-tap">
+                    <span class="group-title">Màu sắc</span>
+                    <svg class="icon-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+            </section>
+
+            <hr class="divider">
+
+            <!-- Filter Group: Dịp -->
+            <section class="filter-group">
+                <button class="group-header has-tap">
+                    <span class="group-title">Dịp</span>
+                    <svg class="icon-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
+                </button>
+                <div class="group-body">
+                    <button class="filter-tag has-tap">Hàng ngày</button>
+                    <button class="filter-tag has-tap">Công sở</button>
+                    <button class="filter-tag has-tap">Hẹn hò</button>
+                    <button class="filter-tag has-tap">Trang trọng</button>
+                    <button class="filter-tag has-tap">Du lịch</button>
+                    <button class="filter-tag has-tap">Ở nhà</button>
+                    <button class="filter-tag has-tap">Tiệc</button>
+                    <button class="filter-tag has-tap">Thể thao</button>
+                    <button class="filter-tag has-tap">Đặc biệt</button>
+                    <button class="filter-tag has-tap">Đi học</button>
+                    <button class="filter-tag has-tap">Bãi biển</button>
+                    <button class="filter-tag has-tap">Khác</button>
+                </div>
+            </section>
+
+            <hr class="divider">
+
+            <!-- Filter Group: Chất liệu (Collapsed state simulation) -->
+            <section class="filter-group">
+                <button class="group-header has-tap">
+                    <span class="group-title">Chất liệu</span>
+                    <svg class="icon-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+            </section>
+            
+            <!-- Khoảng trống cuộn mượt -->
+            <div class="scroll-spacer"></div>
+        </main>
+
+        <!-- Bottom Action Buttons -->
+        <footer class="filter-footer">
+            <button class="btn-reset has-tap">Đặt lại</button>
+            <button class="btn-apply has-tap">Hoàn tất</button>
+        </footer>
+    </div>
+</body>
+</html>

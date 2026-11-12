@@ -1,0 +1,136 @@
+/* RESET & BIẾN MÀU */
+:root {
+    --bg-app: var(--xamnhat); /* Nền của app phía sau */
+    --bg-sheet: var(--trang);
+    --bg-card: var(--xamnhat); /* Màu hồng xám nhạt của thẻ lựa chọn */
+    --text-main: var(--textchinh);
+    --border-card: var(--xamnhat);
+}
+
+/* === BOTTOM SHEET (MODAL) & OVERLAY === */
+.sheet-overlay {
+    position: fixed; inset: 0; background-color: rgba(0,0,0,0.5);
+    z-index: 15; opacity: 0; pointer-events: none; transition: opacity 0.3s;
+}
+.sheet-overlay.show { opacity: 1; pointer-events: auto; }
+
+.bottom-sheet {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    transform: translateY(100%);
+    transition: transform 0.3s ease-out;
+    background-color: var(--bg-sheet);
+    border-top-left-radius: 24px;
+    border-top-right-radius: 24px;
+    padding: 24px;
+    padding-bottom: 40px; /* Padding dưới cho safe area */
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+}
+
+.bottom-sheet.show {
+    transform: translateY(0) !important;
+}
+
+/* Nút Đóng (Close) */
+.close-btn {
+    align-self: flex-end;
+    background: none;
+    border: none;
+    padding: 4px;
+    cursor: pointer;
+    margin-bottom: 12px;
+}
+
+/* Tiêu đề Modal */
+.sheet-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-main);
+    text-align: center;
+    margin-bottom: 24px;
+    line-height: 1.4;
+    padding: 0 10px;
+}
+
+/* Lưới Lựa chọn (Grid Options) */
+.options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+/* Thẻ Lựa chọn (Card) */
+.option-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-card);
+    border-radius: 20px;
+    padding: 20px 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1 / 1.1; /* Tỉ lệ khung hình thẻ hơi cao hơn vuông */
+    cursor: pointer;
+}
+
+/* Trạng thái disabled cho nút */
+.option-card.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.option-visual {
+    flex: 0 0 60%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+/* Xử lý ảnh cho "Sắp xếp tự do" */
+.cloth-item {
+    height: 75%;
+    width: auto;
+    position: absolute;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    background-color: var(--trang);
+    padding: 4px;
+}
+
+.shirt {
+    top: 10%;
+    left: 20%;
+    transform: rotate(-10deg) scale(0.95);
+    z-index: 2;
+}
+
+.pants {
+    bottom: 10%;
+    right: 20%;
+    transform: rotate(15deg) scale(0.95);
+    z-index: 1;
+}
+
+/* Xử lý Icon cho "Gợi ý trang phục" */
+.sparkle-icon {
+    width: 60px;
+    height: 60px;
+    transform: scale(1.1);
+}
+
+/* Text trong thẻ */
+.option-text {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-main);
+    margin-top: 12px;
+    text-align: center;
+}

@@ -1,0 +1,61 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Cài đặt gợi ý trang phục</title>
+    <link rel="stylesheet" href="{% static 'css/_tap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/cai_dat_goi_y.css' %}">
+</head>
+<body>
+    <div class="app-container">
+
+        <!-- Header -->
+        <header class="header">
+            <h1 class="header-title">Cài đặt gợi ý trang phục</h1>
+        </header>
+
+        <!-- Content -->
+        <main class="content scroll-area">
+            <!-- NOTE: form POST gửi quy_dinh_phoi_do khi bấm "Xác nhận" -->
+            <form method="post" id="goiYForm">
+                {% csrf_token %}
+                <!-- Textarea nhập cài đặt -->
+                <div class="textarea-wrapper">
+                    <textarea
+                        class="custom-textarea"
+                        name="quy_dinh_phoi_do"
+                        placeholder="Nhập cài đặt gợi ý (vd: thích phong cách tối giản, ưu tiên tone đất, tránh màu sặc...)"
+                        maxlength="500"
+                        aria-label="Cài đặt gợi ý trang phục"
+                    >{{ quy_dinh_phoi_do }}</textarea>
+                </div>
+            </form>
+
+            <!-- Bộ đếm ký tự -->
+            <div class="char-count">0/500</div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <!-- NOTE: dùng form="goiYForm" để nút ngoài form vẫn submit được form ở trên -->
+            <button class="btn-confirm has-tap" type="submit" form="goiYForm">Xác nhận</button>
+        </footer>
+
+    </div>
+
+    <script>
+        const textarea = document.querySelector('.custom-textarea');
+        const counter = document.querySelector('.char-count');
+        const max = 500;
+        function updateCount() {
+            const len = textarea.value.length;
+            counter.textContent = len + '/' + max;
+            counter.classList.toggle('max-reached', len >= max);
+        }
+        textarea.addEventListener('input', updateCount);
+        updateCount();
+    </script>
+</body>
+</html>
